@@ -9,9 +9,18 @@ public:
 	string place;
 	string date;
 	string round;
-	string white_player;
-	string black_player;
+	string whitePlayer;
+	string blackPlayer;
 	string result;
-	//string name;
+	string eco;
+	string whiteElo;
+	string blackElo;
+	string annotator;
+
+	//array of moves or sth
 };
+
+void read(string temp, Match* game);
+void write(Match* game);
+
 #endif
