@@ -10,14 +10,14 @@ private:
 	GLuint vertexShader; //Uchwyt reprezentuj¹cy vertex shader
 	GLuint geometryShader; //Uchwyt reprezentuj¹cy geometry shader
 	GLuint fragmentShader; //Uchwyt reprezentuj¹cy fragment shader
-	char* readFile(char* fileName); //metoda wczytuj¹ca plik tekstowy do tablicy znaków
-	GLuint loadShader(GLenum shaderType,char* fileName); //Metoda wczytuje i kompiluje shader, a nastêpnie zwraca jego uchwyt
+	char* readFile(char*); //metoda wczytuj¹ca plik tekstowy do tablicy znaków
+	GLuint loadShader(GLenum, char*); //Metoda wczytuje i kompiluje shader, a nastêpnie zwraca jego uchwyt
 public:
-	ShaderProgram(char* vertexShaderFile,char* geometryShaderFile,char* fragmentShaderFile);
+	ShaderProgram(char*, char*, char*);
 	~ShaderProgram();
 	void use(); //W³¹cza wykorzystywanie programu cieniuj¹cego
-	GLuint getUniformLocation(char* variableName); //Pobiera numer slotu zwi¹zanego z dan¹ zmienn¹ jednorodn¹
-	GLuint getAttribLocation(char* variableName); //Pobiera numer slotu zwi¹zanego z danym atrybutem
+	GLuint getUniformLocation(char*); //Pobiera numer slotu zwi¹zanego z dan¹ zmienn¹ jednorodn¹
+	GLuint getAttribLocation(char*); //Pobiera numer slotu zwi¹zanego z danym atrybutem
 };
 
 #endif

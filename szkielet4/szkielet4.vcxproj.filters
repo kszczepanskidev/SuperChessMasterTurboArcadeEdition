@@ -33,6 +33,9 @@
     <ClCompile Include="vboindex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader.txt">
@@ -62,6 +65,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vboindex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="piece.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

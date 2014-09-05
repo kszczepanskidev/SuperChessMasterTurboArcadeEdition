@@ -44,22 +44,6 @@ GLuint bufVertices; //Uchwyt na bufor VBO przechowuj¹cy tablicê wspó³rzêdnych wi
 GLuint bufColors;  //Uchwyt na bufor VBO przechowuj¹cy tablicê kolorów
 GLuint bufNormals; //Uchwyt na bufor VBO przechowuj¹cy tablickê wektorów normalnych
 
-//"Model" który rysujemy. Dane wskazywane przez poni¿sze wskaŸniki i o zadanej liczbie wierzcho³ków s¹ póŸniej wysowane przez program.
-//W programie s¹ dwa modele, z których jeden mo¿na wybraæ komentuj¹c/odkomentowuj¹c jeden z poni¿szych fragmentów.
-
-//Kostka
-/*float *vertices=cubeVertices;
-float *colors=cubeColors;
-float *normals = cubeNormals;
-float *texCoords = cubeTexCoords;
-int vertexCount=cubeVertexCount;*/
-
-//Czajnik
-/*float *vertices=teapotVertices;
-float *colors=teapotColors;
-float *normals=teapotNormals2;
-float *texCoords = teapotTexCoords;
-int vertexCount=teapotVertexCount;*/
 
 //Custom
 float *vertices;

@@ -81,6 +81,7 @@
     <ClCompile Include="main_file.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="pgn.cpp" />
+    <ClCompile Include="piece.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
     <ClCompile Include="tga.cpp" />
     <ClCompile Include="vboindex.cpp" />
@@ -93,6 +94,7 @@
     <ClInclude Include="cube.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="pgn.h" />
+    <ClInclude Include="piece.h" />
     <ClInclude Include="shaderprogram.h" />
     <ClInclude Include="teapot.h" />
     <ClInclude Include="tga.h" />

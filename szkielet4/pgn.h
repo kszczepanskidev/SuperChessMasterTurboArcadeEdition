@@ -5,17 +5,10 @@ using namespace std;
 
 class Match {
 public:
-	string name;
-	string place;
-	string date;
-	string round;
-	string whitePlayer;
-	string blackPlayer;
-	string result;
-	string eco;
-	string whiteElo;
-	string blackElo;
-	string annotator;
+	string name, place, date, round;
+	string whitePlayer, blackPlayer, whiteElo, blackElo;
+	string result, eco, annotator;
+
 	vector<string> moves;
 
 	Match();

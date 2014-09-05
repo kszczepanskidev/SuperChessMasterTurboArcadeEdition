@@ -18,7 +18,7 @@ class TGAImg
 public:
 	TGAImg();
 	~TGAImg();
-	int Load(char* szFilename);
+	int Load(char*);
 	int GetBPP();
 	int GetWidth();
 	int GetHeight();

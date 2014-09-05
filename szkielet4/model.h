@@ -11,11 +11,8 @@ using namespace glm;
 
 class Model {
 public:
-	GLuint Vertices;
-	GLuint Normals;
-	GLuint TexCoords;
-	GLuint Indices;
-	GLuint VAO;
+	GLuint Vertices, Normals, TexCoords;
+	GLuint Indices, VAO;
 
 	int IndicesCount;
 
