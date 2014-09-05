@@ -1,29 +1,28 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-struct Square {
-	float x, z;
-};
-
 class Piece {
 	Model* model;
+	char type;
 	mat4 matM;
-	GLuint* texture;
-	GLuint* textureSpecular;
-	float xDistance, zDistance;
-	bool onBoard;
-
+	GLuint *texture, *textureSpecular;
+	float xDistance, yDistance;
+	vector<Square> possibleMoves;
+	bool onBoard, moving;
 	Square current, target;
 
 public:
 	void draw(ShaderProgram*);
-	void setTarget(Square);
 	void move();
 	void promotion(Model*);
 
+	void setTarget(Square);
 	void setOnBoard(bool);
+	bool getOnBoard();
+	bool getMoving();
+	void setPossibleMoves();
 
-	Piece(Model*, GLuint*, GLuint*, Square);
+	Piece(Model*, GLuint*, GLuint*, Square, char);
 };
 
 #endif

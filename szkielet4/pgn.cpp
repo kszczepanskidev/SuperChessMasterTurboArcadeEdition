@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "pgn.h"
 
@@ -93,6 +94,7 @@ Match::Match() {
 	while (getline(pgnfile, temp))
 		readMoves(temp, this);
 
+	reverse(moves.begin(), moves.end());
 	pgnfile.close();
 
 	write(this);

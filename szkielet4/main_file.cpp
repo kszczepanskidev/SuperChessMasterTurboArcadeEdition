@@ -1,56 +1,48 @@
+#include <stdio.h>
+#include <vector>
+#include <string>
+#include <iterator>
+
 #include "GL/glew.h"
 #include "GL/freeglut.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include <stdio.h>
-#include <vector>
-#include <string>
-#include <iterator>
+
 #include "tga.h"
 #include "shaderprogram.h"
-#include "cube.h"
-#include "teapot.h"
+#include "board.h"
+#include "piece.h"
 #include "model.h"
 #include "pgn.h"
 
-GLuint tex0; //uchwyt na teksturê
-GLuint tex1; //uchwyt na teksturê
-GLuint bufTexCoords; //tablica wspolrzednych teksturowania
+using namespace std;
+using namespace glm;
 
 //Macierze
-glm::mat4  matP;//rzutowania
-glm::mat4  matV;//widoku
-glm::mat4  matM;//modelu
+mat4  matP;																										//rzutowania
+mat4  matV;																										//widoku
+vec3 camera = vec3(0.0f, 5.0f, -5.0f);																			//camera (vector)
 
 //Ustawienia okna i rzutowania
-int windowPositionX=100;
-int windowPositionY=100;
-int windowWidth=800;
-int windowHeight=800;
+int windowWidth=1280;
+int windowHeight=720;
 float cameraAngle=45.0f;
 
 //Zmienne do animacji
-float speed=0; //120 stopni/s
-int lastTime=0;
-float angle=0;
+float speedX = 0, speedY = 0;
+float angleX = 0, angleY = 0;
+int lastTime = 0;
 
 //Uchwyty na shadery
-ShaderProgram *shaderProgram; //WskaŸnik na obiekt reprezentuj¹cy program cieniuj¹cy.
+ShaderProgram *shader;																					//WskaŸnik na obiekt reprezentuj¹cy program cieniuj¹cy.
 
-//Uchwyty na VAO i bufory wierzcho³ków
-GLuint vao;
-GLuint bufVertices; //Uchwyt na bufor VBO przechowuj¹cy tablicê wspó³rzêdnych wierzcho³ków
-GLuint bufColors;  //Uchwyt na bufor VBO przechowuj¹cy tablicê kolorów
-GLuint bufNormals; //Uchwyt na bufor VBO przechowuj¹cy tablickê wektorów normalnych
+GLuint textures[4];																								//array of texture handles
 
-
-//Custom
-float *vertices;
-float *texCoords;
-float *normals; 
-float *colors = cubeColors;
-int vertexCount;
+Model* models[6];																								//array of pointers to models
+Chessboard* chessBoard;																							
+Piece* pieces[35];																								//0-31 all pieces | 32-33 pieces to move | 34 piece to beat
+Match* match;
 
 
 GLuint readTexture(char* filename) {
@@ -81,45 +73,27 @@ GLuint readTexture(char* filename) {
 }
 
 //Procedura rysuj¹ca jakiœ obiekt. Ustawia odpowiednie parametry dla vertex shadera i rysuje.
-void drawObject() {
-
+void drawObjects() {
 	//W³¹czenie programu cieniuj¹cego, który ma zostaæ u¿yty do rysowania
 	//W tym programie wystarczy³oby wywo³aæ to raz, w setupShaders, ale chodzi o pokazanie, 
 	//¿e mozna zmieniaæ program cieniuj¹cy podczas rysowania jednej sceny
-	shaderProgram->use();
-	
-	//Przeka¿ do shadera macierze P,V i M.
-	//W linijkach poni¿ej, polecenie:
-	//  shaderProgram->getUniformLocation("P") 
-	//pobiera numer slotu odpowiadaj¹cego zmiennej jednorodnej o podanej nazwie
-	//UWAGA! "P" w powy¿szym poleceniu odpowiada deklaracji "uniform mat4 P;" w vertex shaderze, 
-	//a matP w glm::value_ptr(matP) odpowiada deklaracji  "glm::mat4 matP;" TYM pliku.
-	//Ca³a poni¿sza linijka przekazuje do zmiennej jednorodnej P w vertex shaderze dane ze zmiennej matP
-	//zadeklarowanej globalnie w tym pliku. 
-	//Pozosta³e polecenia dzia³aj¹ podobnie.
-	glUniformMatrix4fv(shaderProgram->getUniformLocation("P"),1, false, glm::value_ptr(matP));
-	glUniformMatrix4fv(shaderProgram->getUniformLocation("V"),1, false, glm::value_ptr(matV));
-	glUniformMatrix4fv(shaderProgram->getUniformLocation("M"),1, false, glm::value_ptr(matM));
+	shader->use();
 
-	glUniform1i(shaderProgram->getUniformLocation("textureMap0"), 0);
-	glUniform1i(shaderProgram->getUniformLocation("textureMap1"), 1);
+	//Przeka¿ do shadera macierze P i V.
+	glUniformMatrix4fv(shader->getUniformLocation("P"), 1, false, value_ptr(matP));
+	glUniformMatrix4fv(shader->getUniformLocation("V"), 1, false, value_ptr(matV));
 
-	glUniform4f(shaderProgram->getUniformLocation("lightPosition"),0,0,5,1);
-	
-	//Uaktywnienie VAO i tym samym uaktywnienie predefiniowanych w tym VAO powi¹zañ slotów atrybutów z tablicami z danymi
-	glBindVertexArray(vao);
+	glUniform1i(shader->getUniformLocation("textureMap0"), 0);
+	glUniform1i(shader->getUniformLocation("textureMap1"), 1);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex0);
+	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
+	glUniform4f(shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
 
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, tex1);
+	for (int i = 0; i < 32; ++i)																				//drawing all pieces
+		if (pieces[i]->getOnBoard())
+			pieces[i]->draw(shader);
 
-	//Narysowanie obiektu
-	glDrawArrays(GL_TRIANGLES,0,vertexCount);
-	
-	//Posprz¹tanie po sobie (niekonieczne w sumie je¿eli korzystamy z VAO dla ka¿dego rysowanego obiektu)
-	glBindVertexArray(0);
+	//there to add drawing chessboard from model or primitive
 }
 
 //Procedura rysuj¹ca
@@ -129,70 +103,37 @@ void displayFrame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Wylicz macierz rzutowania
-	matP=glm::perspective(cameraAngle, (float)windowWidth/(float)windowHeight, 1.0f, 1000.0f);
+	matP=glm::perspective(cameraAngle, (float)windowWidth/(float)windowHeight, 1.0f, 100.0f);
 	
 	//Wylicz macierz widoku
-	matV=glm::lookAt(glm::vec3(0.0f,0.0f,-40.0f),glm::vec3(0.0f,0.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f)); 
-
-	//Wylicz macierz modelu
-	matM=glm::rotate(glm::mat4(1.0f),angle,glm::vec3(0.5,1,0)); 
+	matV = lookAt(vec3(0.0f, 5.0f, -5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	
-	//Narysuj obiekt
-	drawObject();
+	//Narysuj obiekty
+	drawObjects();
 	
 	//Tylny bufor na przedni
 	glutSwapBuffers();
 }
 
-/**/GLuint makeBuffer(void *data, int vertexCount, int vertexSize) {
-	GLuint handle;
-	
-	glGenBuffers(1,&handle);//Wygeneruj uchwyt na Vertex Buffer Object (VBO), który bêdzie zawiera³ tablicê danych
-	glBindBuffer(GL_ARRAY_BUFFER,handle);  //Uaktywnij wygenerowany uchwyt VBO 
-	glBufferData(GL_ARRAY_BUFFER, vertexCount*vertexSize, data, GL_STATIC_DRAW);//Wgraj tablicê do VBO
-	
-	return handle;
-}
-
-//Procedura tworz¹ca bufory VBO zawieraj¹ce dane z tablic opisuj¹cych rysowany obiekt.
-/**/void setupVBO() {
-	bufVertices=makeBuffer(vertices, vertexCount, sizeof(float)*4); //Wspó³rzêdne wierzcho³ków
-	bufColors=makeBuffer(colors, vertexCount, sizeof(float)*4);//Kolory wierzcho³ków
-	bufNormals=makeBuffer(normals, vertexCount, sizeof(float)*4);//Wektory normalne wierzcho³ków
-	//bufTexCoords = makeBuffer(teapotTexCoords, teapotVertexCount, sizeof(float)* 2);
-	bufTexCoords = makeBuffer(texCoords, vertexCount, sizeof(float)* 2);
-}
-
-/**/void assignVBOtoAttribute(char* attributeName, GLuint bufVBO, int variableSize) {
-	GLuint location=shaderProgram->getAttribLocation(attributeName); //Pobierz numery slotów dla atrybutu
-	glBindBuffer(GL_ARRAY_BUFFER,bufVBO);  //Uaktywnij uchwyt VBO 
-	glEnableVertexAttribArray(location); //W³¹cz u¿ywanie atrybutu o numerze slotu zapisanym w zmiennej location
-	glVertexAttribPointer(location,variableSize,GL_FLOAT, GL_FALSE, 0, NULL); //Dane do slotu location maj¹ byæ brane z aktywnego VBO
-}
-
-//Procedura tworz¹ca VAO - "obiekt" OpenGL wi¹¿¹cy numery slotów atrybutów z buforami VBO
-/**/void setupVAO() {
-	//Wygeneruj uchwyt na VAO i zapisz go do zmiennej globalnej
-	glGenVertexArrays(1,&vao);
-	
-	//Uaktywnij nowo utworzony VAO
-	glBindVertexArray(vao);
-
-	assignVBOtoAttribute("vertex",bufVertices,4); //"vertex" odnosi siê do deklaracji "in vec4 vertex;" w vertex shaderze
-	assignVBOtoAttribute("color",bufColors,4); //"color" odnosi siê do deklaracji "in vec4 color;" w vertex shaderze
-	assignVBOtoAttribute("normal",bufNormals,4); //"normal" odnosi siê do deklaracji "in vec4 normal;" w vertex shaderze
-	assignVBOtoAttribute("texCoord", bufTexCoords, 2);
-	
-	glBindVertexArray(0);
-}
 
 //Procedura uruchamiana okresowo. Robi animacjê.
 void nextFrame(void) {
 	int actTime=glutGet(GLUT_ELAPSED_TIME);
 	int interval=actTime-lastTime;
 	lastTime=actTime;
-	angle+=speed*interval/1000.0;
-	if (angle>360) angle-=360;
+
+	angleX += speedX*interval / 1000.0;
+	angleY += speedY*interval / 1000.0;
+
+	if (angleX>360) angleX -= 360;
+	if (angleX<0) angleX += 360;
+	if (angleY>360) angleY -= 360;
+	if (angleY<0) angleY += 360;
+
+	for (int i = 0; i < 2; ++i)
+		if (pieces[32 + i]->getMoving())
+			pieces[32 + i]->move();
+
 	glutPostRedisplay();
 }
 
@@ -208,15 +149,15 @@ void changeSize(int w, int h) {
 //Procedura inicjuj¹ca biblotekê glut
 void initGLUT(int *argc, char** argv) {
 	glutInit(argc,argv); //Zainicjuj bibliotekê GLUT
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH); //Alokuj bufory kolorów (podwójne buforowanie) i bufor kolorów
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);													//Alokuj bufory kolorów (podwójne buforowanie) i bufor kolorów
 	
-	glutInitWindowPosition(windowPositionX,windowPositionY); //Wska¿ pocz¹tkow¹ pozycjê okna
+	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - windowHeight) / 2);	//Wska¿ pocz¹tkow¹ pozycjê okna
 	glutInitWindowSize(windowWidth,windowHeight); //Wska¿ pocz¹tkowy rozmiar okna
 	glutCreateWindow("OpenGL 3.3"); //Utwórz okno i nadaj mu tytu³
 	
-	glutReshapeFunc(changeSize); //Zarejestruj procedurê changeSize jako procedurê obs³uguj¹ca zmianê rozmiaru okna
-	glutDisplayFunc(displayFrame); //Zarejestruj procedurê displayFrame jako procedurê obs³uguj¹ca odœwierzanie okna
-	glutIdleFunc(nextFrame); //Zarejestruj procedurê nextFrame jako procedurê wywo³ywan¹ najczêœciêj jak siê da (animacja)
+	glutReshapeFunc(changeSize);																				//Zarejestruj procedurê changeSize jako procedurê obs³uguj¹ca zmianê rozmiaru okna
+	glutDisplayFunc(displayFrame);																				//Zarejestruj procedurê displayFrame jako procedurê obs³uguj¹ca odœwierzanie okna
+	glutIdleFunc(nextFrame);																					//Zarejestruj procedurê nextFrame jako procedurê wywo³ywan¹ najczêœciêj jak siê da (animacja)
 }
 
 
