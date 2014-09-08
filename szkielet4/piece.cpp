@@ -37,7 +37,7 @@ void Piece::move() {
 		moving = false;
 }
 
-bool Piece::getOnBoard() {
+bool Piece::getMoving() {
 	return moving;
 }
 

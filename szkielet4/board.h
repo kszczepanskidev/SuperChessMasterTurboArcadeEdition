@@ -1,6 +1,8 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "model.h"
+
 struct Square {
 	float x, y;
 	char rank, file;

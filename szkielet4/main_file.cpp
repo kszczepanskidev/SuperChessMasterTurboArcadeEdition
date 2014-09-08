@@ -31,6 +31,7 @@ int windowHeight=720;
 float cameraAngle=45.0f;
 
 //Zmienne do animacji
+float speed;
 float speedX = 0, speedY = 0;
 float angleX = 0, angleY = 0;
 int lastTime = 0;
@@ -182,28 +183,28 @@ void setupShaders() {
 
 //procedura inicjuj¹ca ró¿ne sprawy zwi¹zane z rysowaniem w OpenGL
 void initOpenGL() {
-	tex0 = readTexture("metal.tga");
-	tex1 = readTexture("sky.tga");
+	//tex0 = readTexture("metal.tga");
+	//tex1 = readTexture("sky.tga");
 	setupShaders();
-	setupVBO();
-	setupVAO();
+	//setupVBO();
+	//setupVAO();
 	glEnable(GL_DEPTH_TEST);
 }
 
 //Zwolnij pamiêæ karty graficznej z shaderów i programu cieniuj¹cego
 void cleanShaders() {
-	delete shaderProgram;
+	delete App->shader;
 }
 
-/**/void freeVBO() {
+/*void freeVBO() {
 	glDeleteBuffers(1,&bufVertices);
 	glDeleteBuffers(1,&bufColors);
 	glDeleteBuffers(1,&bufNormals);
-}
+}*/
 
-/**/void freeVAO() {
+/*void freeVAO() {
 	glDeleteVertexArrays(1,&vao);
-}
+}*/
 
 void keyDown(int c, int x, int y){
 	if (c == GLUT_KEY_UP)
@@ -230,8 +231,8 @@ int main(int argc, char** argv) {
 	
 	glutMainLoop();
 	
-	freeVAO();
-	freeVBO();
+	//freeVAO();
+	//freeVBO();
 	cleanShaders();
 	return 0;
 }

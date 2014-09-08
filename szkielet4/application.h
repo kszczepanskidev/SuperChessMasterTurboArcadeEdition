@@ -21,6 +21,6 @@ public:
 	Match* match;
 
 	Application();
-}
+};
 
 #endif
