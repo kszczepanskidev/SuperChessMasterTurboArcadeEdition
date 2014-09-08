@@ -78,6 +78,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="application.cpp" />
+    <ClCompile Include="board.cpp" />
     <ClCompile Include="main_file.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="pgn.cpp" />
@@ -91,6 +93,8 @@
     <None Include="vshader.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="application.h" />
+    <ClInclude Include="board.h" />
     <ClInclude Include="cube.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="pgn.h" />
