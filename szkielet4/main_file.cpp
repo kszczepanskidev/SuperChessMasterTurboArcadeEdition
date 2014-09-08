@@ -9,6 +9,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
+#include "application.h"
 #include "tga.h"
 #include "shaderprogram.h"
 #include "board.h"
@@ -34,6 +35,8 @@ float speedX = 0, speedY = 0;
 float angleX = 0, angleY = 0;
 int lastTime = 0;
 
+Application* App;
+/*
 //Uchwyty na shadery
 ShaderProgram *shader;																					//WskaŸnik na obiekt reprezentuj¹cy program cieniuj¹cy.
 
@@ -43,7 +46,7 @@ Model* models[6];																								//array of pointers to models
 Chessboard* chessBoard;																							
 Piece* pieces[35];																								//0-31 all pieces | 32-33 pieces to move | 34 piece to beat
 Match* match;
-
+*/
 
 GLuint readTexture(char* filename) {
 	GLuint tex;
@@ -77,21 +80,21 @@ void drawObjects() {
 	//W³¹czenie programu cieniuj¹cego, który ma zostaæ u¿yty do rysowania
 	//W tym programie wystarczy³oby wywo³aæ to raz, w setupShaders, ale chodzi o pokazanie, 
 	//¿e mozna zmieniaæ program cieniuj¹cy podczas rysowania jednej sceny
-	shader->use();
+	App->shader->use();
 
 	//Przeka¿ do shadera macierze P i V.
-	glUniformMatrix4fv(shader->getUniformLocation("P"), 1, false, value_ptr(matP));
-	glUniformMatrix4fv(shader->getUniformLocation("V"), 1, false, value_ptr(matV));
+	glUniformMatrix4fv(App->shader->getUniformLocation("P"), 1, false, value_ptr(matP));
+	glUniformMatrix4fv(App->shader->getUniformLocation("V"), 1, false, value_ptr(matV));
 
-	glUniform1i(shader->getUniformLocation("textureMap0"), 0);
-	glUniform1i(shader->getUniformLocation("textureMap1"), 1);
+	glUniform1i(App->shader->getUniformLocation("textureMap0"), 0);
+	glUniform1i(App->shader->getUniformLocation("textureMap1"), 1);
 
-	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
-	glUniform4f(shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
+	glUniform4f(App->shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
+	glUniform4f(App->shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
 
 	for (int i = 0; i < 32; ++i)																				//drawing all pieces
-		if (pieces[i]->getOnBoard())
-			pieces[i]->draw(shader);
+		if (App->pieces[i]->getOnBoard())
+			App->pieces[i]->draw(App->shader);
 
 	//there to add drawing chessboard from model or primitive
 }
@@ -131,8 +134,8 @@ void nextFrame(void) {
 	if (angleY<0) angleY += 360;
 
 	for (int i = 0; i < 2; ++i)
-		if (pieces[32 + i]->getMoving())
-			pieces[32 + i]->move();
+		if (App->pieces[32 + i]->getMoving())
+			App->pieces[32 + i]->move();
 
 	glutPostRedisplay();
 }
@@ -174,7 +177,7 @@ void initGLEW() {
 
 //Wczytuje vertex shader i fragment shader i ³¹czy je w program cieniuj¹cy
 void setupShaders() {
-	shaderProgram=new ShaderProgram("vshader.txt",NULL,"fshader.txt");
+	App->shader=new ShaderProgram("vshader.txt",NULL,"fshader.txt");
 }
 
 //procedura inicjuj¹ca ró¿ne sprawy zwi¹zane z rysowaniem w OpenGL
@@ -219,7 +222,7 @@ int main(int argc, char** argv) {
 	initGLEW();
 	initOpenGL(); 
 
-	Match *Game = new Match();
+	App = new Application();
 
 	
 	glutSpecialFunc(keyDown);
