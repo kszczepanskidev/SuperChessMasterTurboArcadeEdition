@@ -1,14 +1,16 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include "model.h"
+
 struct Square {
 	float x, y;
 	char rank, file;
 };
 
 
-class Chessboard{
-	Model* model;
+class Chessboard {
+	Model *model;
 	mat4 matM;
 	GLuint *texture, *textureSpecular;
 

@@ -82,7 +82,7 @@ Match::Match() {
 	//cout << "Enter .PGN file name: ";
 	//cin >> filename;
 	filename = "test";
-	pgnfile.open(filename + ".pgn", ios::in);
+	pgnfile.open("data\\" + filename + ".pgn", ios::in);
 	if (pgnfile.fail()){
 		cout << "Error: could not open file" << endl;
 		exit(1);

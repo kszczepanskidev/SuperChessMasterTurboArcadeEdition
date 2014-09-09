@@ -17,6 +17,7 @@
 #include "model.h"
 #include "pgn.h"
 
+
 using namespace std;
 using namespace glm;
 
@@ -35,67 +36,41 @@ float speedX = 0, speedY = 0;
 float angleX = 0, angleY = 0;
 int lastTime = 0;
 
-Application* App;
-/*
 //Uchwyty na shadery
 ShaderProgram *shader;																					//WskaŸnik na obiekt reprezentuj¹cy program cieniuj¹cy.
-
+/*
 GLuint textures[4];																								//array of texture handles
 
 Model* models[6];																								//array of pointers to models
 Chessboard* chessBoard;																							
 Piece* pieces[35];																								//0-31 all pieces | 32-33 pieces to move | 34 piece to beat
-Match* match;
-*/
+Match* match;*/
 
-GLuint readTexture(char* filename) {
-	GLuint tex;
-	TGAImg img;
-	glActiveTexture(GL_TEXTURE0);
-	if (img.Load(filename) == IMG_OK) {
-		glGenTextures(1, &tex); //Zainicjuj uchwyt tex
-		glBindTexture(GL_TEXTURE_2D, tex); //Przetwarzaj uchwyt tex
-		if (img.GetBPP() == 24) //Obrazek 24bit
-			glTexImage2D(GL_TEXTURE_2D, 0, 3, img.GetWidth(), img.GetHeight(), 0,
-			GL_RGB, GL_UNSIGNED_BYTE, img.GetImg());
-		else if (img.GetBPP() == 32) //Obrazek 32bit
-			glTexImage2D(GL_TEXTURE_2D, 0, 4, img.GetWidth(), img.GetHeight(), 0,
-			GL_RGBA, GL_UNSIGNED_BYTE, img.GetImg());
-		else {
-			printf("Nieobs³ugiwany format obrazka w pliku: %s \n", filename);
-		}
-	}
-	else {
-		printf("B³¹d przy wczytywaniu pliku: %s\n", filename);
-	}
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	return tex;
-}
+Application *App;
+
+
 
 //Procedura rysuj¹ca jakiœ obiekt. Ustawia odpowiednie parametry dla vertex shadera i rysuje.
 void drawObjects() {
 	//W³¹czenie programu cieniuj¹cego, który ma zostaæ u¿yty do rysowania
 	//W tym programie wystarczy³oby wywo³aæ to raz, w setupShaders, ale chodzi o pokazanie, 
 	//¿e mozna zmieniaæ program cieniuj¹cy podczas rysowania jednej sceny
-	App->shader->use();
+	shader->use();
 
 	//Przeka¿ do shadera macierze P i V.
-	glUniformMatrix4fv(App->shader->getUniformLocation("P"), 1, false, value_ptr(matP));
-	glUniformMatrix4fv(App->shader->getUniformLocation("V"), 1, false, value_ptr(matV));
+	glUniformMatrix4fv(shader->getUniformLocation("P"), 1, false, value_ptr(matP));
+	glUniformMatrix4fv(shader->getUniformLocation("V"), 1, false, value_ptr(matV));
 
-	glUniform1i(App->shader->getUniformLocation("textureMap0"), 0);
-	glUniform1i(App->shader->getUniformLocation("textureMap1"), 1);
+	glUniform1i(shader->getUniformLocation("textureMap0"), 0);
+	glUniform1i(shader->getUniformLocation("textureMap1"), 1);
 
-	glUniform4f(App->shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
-	glUniform4f(App->shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
+	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
+	glUniform4f(shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
 
 	for (int i = 0; i < 32; ++i)																				//drawing all pieces
 		if (App->pieces[i]->getOnBoard())
-			App->pieces[i]->draw(App->shader);
-
+			App->pieces[i]->draw(shader);
+	cout << "drawobjects" << endl;
 	//there to add drawing chessboard from model or primitive
 }
 
@@ -156,7 +131,7 @@ void initGLUT(int *argc, char** argv) {
 	
 	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - windowHeight) / 2);	//Wska¿ pocz¹tkow¹ pozycjê okna
 	glutInitWindowSize(windowWidth,windowHeight); //Wska¿ pocz¹tkowy rozmiar okna
-	glutCreateWindow("OpenGL 3.3"); //Utwórz okno i nadaj mu tytu³
+	glutCreateWindow("SuperChessMasterTurboArcadeEdition"); //Utwórz okno i nadaj mu tytu³
 	
 	glutReshapeFunc(changeSize);																				//Zarejestruj procedurê changeSize jako procedurê obs³uguj¹ca zmianê rozmiaru okna
 	glutDisplayFunc(displayFrame);																				//Zarejestruj procedurê displayFrame jako procedurê obs³uguj¹ca odœwierzanie okna
@@ -177,61 +152,63 @@ void initGLEW() {
 
 //Wczytuje vertex shader i fragment shader i ³¹czy je w program cieniuj¹cy
 void setupShaders() {
-	App->shader=new ShaderProgram("vshader.txt",NULL,"fshader.txt");
+	shader = new ShaderProgram("vshader.txt", NULL, "fshader.txt");
 }
 
 //procedura inicjuj¹ca ró¿ne sprawy zwi¹zane z rysowaniem w OpenGL
 void initOpenGL() {
-	tex0 = readTexture("metal.tga");
-	tex1 = readTexture("sky.tga");
 	setupShaders();
-	setupVBO();
-	setupVAO();
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_MULTISAMPLE_ARB);
 }
 
 //Zwolnij pamiêæ karty graficznej z shaderów i programu cieniuj¹cego
 void cleanShaders() {
-	delete shaderProgram;
+	delete shader;
 }
 
-/**/void freeVBO() {
-	glDeleteBuffers(1,&bufVertices);
-	glDeleteBuffers(1,&bufColors);
-	glDeleteBuffers(1,&bufNormals);
-}
-
-/**/void freeVAO() {
-	glDeleteVertexArrays(1,&vao);
-}
 
 void keyDown(int c, int x, int y){
-	if (c == GLUT_KEY_UP)
-		speed = 50;
-	if (c == GLUT_KEY_DOWN)
-		speed = -50;
+	switch (c) {
+	case GLUT_KEY_UP:
+		speedX = 100;
+		break;
+	case GLUT_KEY_DOWN:
+		speedX = -100;
+		break;
+	case GLUT_KEY_LEFT:
+		speedY = 100;
+		break;
+	case GLUT_KEY_RIGHT:
+		speedY = -100;
+		break;
+	case GLUT_KEY_DELETE:
+	case 13:
+		break;
+	}
 }
+
 
 void keyUp(int c, int x, int y){
 	if (c == GLUT_KEY_UP || c == GLUT_KEY_DOWN)
-		speed = 0;
+		speedX = 0;
+	if (c == GLUT_KEY_RIGHT || c == GLUT_KEY_LEFT)
+		speedY = 0;
 }
 
 int main(int argc, char** argv) {
+
 	initGLUT(&argc,argv);
 	initGLEW();
 	initOpenGL(); 
-
-	App = new Application();
-
 	
 	glutSpecialFunc(keyDown);
 	glutSpecialUpFunc(keyUp);
-	
+
+	App = new Application(shader);
+
 	glutMainLoop();
 	
-	freeVAO();
-	freeVBO();
 	cleanShaders();
 	return 0;
 }

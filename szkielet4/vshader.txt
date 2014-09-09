@@ -4,31 +4,41 @@
 uniform mat4 P;
 uniform mat4 V;
 uniform mat4 M;
+uniform vec4 lpoz1;
+uniform vec4 lpoz2;
+uniform vec4 lpoz3;
+uniform vec4 lpoz4;
+//uniform vec4 lpoz5;
 
+const int nol = 4; //Liczba zrodel swiatla
 
 //Atrybuty
-in vec4 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
-in vec4 color;  //kolor wierzcholka (na razie ignorowany)
-in vec4 normal; //wektor normalny w wierzcholku (na razie ignorowany) - przestrzen modelu
+in vec3 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
+in vec3 normal; //wektor normalny w wierzcholku
+in vec2 texCoord; //wspolrzedne teksturowania
 
-in vec2 texCoord;
-
-out vec4 l;
+//Zmienne wyjsciowe
+out vec4 l[nol];
 out vec4 n;
 out vec4 v;
-out vec4 interpolatedColor;
 out vec2 iTexCoord;
-out vec2 iTexCoord2;
-
-uniform vec4 lightPosition; //wspolrzedne homogeniczne swiatla w przestrzeni swiata
 
 void main(void) {
-	gl_Position=P*V*M*vertex;
-	/*
-	l=normalize(V*(lightPosition-M*vertex)); //wektor do swiatla w przestrzeni oka
-	n=normalize(V*M*normal); //wektor normalny w przestrzeni oka - uwaga! poprawnie powinno sie mnozyc razy G=transpose(invert(M))
-	v=normalize(vec4(0,0,0,1)-V*M*vertex);
-	interpolatedColor=color;
+	vec4 tmp_vertex = vec4(vertex, 1.0);
+	vec4 tmp_normal = vec4(normal, 1.0);
+
+	vec4 lpoz[nol];
+	lpoz[0] = lpoz1;
+	lpoz[1] = lpoz2;
+	lpoz[2] = lpoz3;
+	lpoz[3] = lpoz4;
+	//lpoz[4] = lpoz5;
+
+	gl_Position = P*V*M*tmp_vertex;
+
+	for(int i = 0; i < nol; i++)
+		l[i] = normalize(V*(lpoz[i] - M*tmp_vertex)); //wektor do swiatla w przestrzeni oka
+	n = normalize(V*M*tmp_normal); //wektor normalny w przestrzeni oka
+	v = normalize(vec4(0,0,0,1) - V*M*tmp_vertex); //wektor do obserwatora w przestrzeni oka
 	iTexCoord = texCoord;
-	iTexCoord2 = (n.xy+1)/2;*/
 }

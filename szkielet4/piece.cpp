@@ -2,12 +2,12 @@
 #include <string>
 #include <vector>
 
-#include "glm/gtc/type_ptr.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-
 #include "model.h"
 #include "board.h"
 #include "piece.h"
+
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 using namespace glm;
 
@@ -37,7 +37,7 @@ void Piece::move() {
 		moving = false;
 }
 
-bool Piece::getOnBoard() {
+bool Piece::getMoving() {
 	return moving;
 }
 

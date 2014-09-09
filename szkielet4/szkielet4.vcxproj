@@ -95,12 +95,10 @@
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="board.h" />
-    <ClInclude Include="cube.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="pgn.h" />
     <ClInclude Include="piece.h" />
     <ClInclude Include="shaderprogram.h" />
-    <ClInclude Include="teapot.h" />
     <ClInclude Include="tga.h" />
     <ClInclude Include="vboindex.h" />
   </ItemGroup>

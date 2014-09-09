@@ -110,7 +110,7 @@ Model::Model(string filename, ShaderProgram* shader){
 			int index[3];
 			for (int i = 0; i < 3; i++) {
 				ss >> temp;
-				scanf_s(temp.c_str(), "%d/%d/%d", &index[0], &index[1], &index[2]);
+				sscanf_s(temp.c_str(), "%d/%d/%d", &index[0], &index[1], &index[2]);
 				vertexIndices.push_back(index[0]);
 				texCoordsIndices.push_back(index[1]);
 				normalIndices.push_back(index[2]);
@@ -147,6 +147,7 @@ Model::Model(string filename, ShaderProgram* shader){
 	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
 	
 	cout << "VAO created" << endl;
+	cout << "Model initialized" << endl;
 }
 
 Model::~Model() {
