@@ -41,7 +41,7 @@ GLuint ShaderProgram::loadShader(GLenum shaderType,char* fileName) {
 	if (infologLength > 1) {
 		infoLog = new char[infologLength];
 		glGetShaderInfoLog(shader, infologLength, &charsWritten, infoLog);
-		printf("%s\n",infoLog);
+		//printf("%s\n",infoLog);
 		delete []infoLog;
 	}
 	
@@ -86,7 +86,7 @@ ShaderProgram::ShaderProgram(char* vertexShaderFile,char* geometryShaderFile,cha
 	{
 		infoLog = new char[infologLength];
 		glGetProgramInfoLog(shaderProgram, infologLength, &charsWritten, infoLog);
-		printf("%s\n",infoLog);
+		//printf("%s\n",infoLog);
 		delete []infoLog;
 	}
 

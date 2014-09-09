@@ -70,14 +70,13 @@ void drawObjects() {
 	for (int i = 0; i < 32; ++i)																				//drawing all pieces
 		if (App->pieces[i]->getOnBoard())
 			App->pieces[i]->draw(shader);
-	cout << "drawobjects" << endl;
 	//there to add drawing chessboard from model or primitive
 }
 
 //Procedura rysuj¹ca
 void displayFrame() {
 	//Wyczyœæ bufor kolorów i bufor g³êbokoœci
-	glClearColor(0,0,0,1);
+	glClearColor(0.5,0.5,0.5,1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Wylicz macierz rzutowania
@@ -107,11 +106,11 @@ void nextFrame(void) {
 	if (angleX<0) angleX += 360;
 	if (angleY>360) angleY -= 360;
 	if (angleY<0) angleY += 360;
-
+	/*
 	for (int i = 0; i < 2; ++i)
-		if (App->pieces[32 + i]->getMoving())
+		if (App->pieces[32 + i] != null && App->pieces[32 + i]->getMoving())
 			App->pieces[32 + i]->move();
-
+			*/
 	glutPostRedisplay();
 }
 
