@@ -68,7 +68,7 @@ Model::Model(string filename, ShaderProgram* shader){
 
 	vector<unsigned int> vertexIndices, texCoordsIndices, normalIndices;
 
-	cout << "Loading .OBJ file..." << endl;
+	cout << "Loading .OBJ file | ";
 	ifstream objFile(filename.c_str());
 	if (objFile.fail())	{
 		cout << "Error: could not open file" << endl;
@@ -125,7 +125,7 @@ Model::Model(string filename, ShaderProgram* shader){
 		Norms.push_back(tempNormals[normalIndices[i] - 1]);
 	}
 
-	cout << "Model loading complete" << endl;
+	cout << "Model loading complete | ";
 
 	vector<unsigned short> indices;
 	vector<vec3> indexedVertices;
@@ -135,10 +135,10 @@ Model::Model(string filename, ShaderProgram* shader){
 	indexVBO(Verts, Texs, Norms, indices, indexedVertices, indexedTexCoords, indexedNormals);
 	IndicesCount = indices.size();
 
-	cout << "Indexing complete" << endl;
+	cout << "Indexing complete | ";
 
 	setupVBO(*this, indices, indexedVertices, indexedTexCoords, indexedNormals);
-	cout << "VBO buffers created" << endl;
+	cout << "VBO buffers created | ";
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -146,8 +146,8 @@ Model::Model(string filename, ShaderProgram* shader){
 	assignVBOtoAttribute(shader, "normal", Normals, 3);		//"normal" odnosi siê do deklaracji "in vec3 normal;" w vertex shaderze
 	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
 	
-	cout << "VAO created" << endl;
-	cout << "Model initialized" << endl;
+	cout << "VAO created | ";
+	cout << "Model initialized" << endl << endl;
 }
 
 Model::~Model() {

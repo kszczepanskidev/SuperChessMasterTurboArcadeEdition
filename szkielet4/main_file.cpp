@@ -84,6 +84,9 @@ void displayFrame() {
 	
 	//Wylicz macierz widoku
 	matV = lookAt(vec3(0.0f, 5.0f, -5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+	matV = rotate(matV, angleX, vec3(1.0f, 0.0f, 0.0f));
+	matV = rotate(matV, angleY, vec3(0.0f, 1.0f, 0.0f));
 	
 	//Narysuj obiekty
 	drawObjects();
