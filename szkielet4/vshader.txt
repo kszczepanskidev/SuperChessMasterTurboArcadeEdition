@@ -10,7 +10,7 @@ uniform vec4 lpoz3;
 uniform vec4 lpoz4;
 //uniform vec4 lpoz5;
 
-const int nol = 2; //Liczba zrodel swiatla
+const int nol = 4; //Liczba zrodel swiatla
 
 //Atrybuty
 in vec3 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
@@ -30,6 +30,9 @@ void main(void) {
 	vec4 lpoz[nol];
 	lpoz[0] = lpoz1;
 	lpoz[1] = lpoz2;
+	lpoz[2] = lpoz3;
+	lpoz[3] = lpoz4;
+	//lpoz[4] = lpoz5;
 
 	gl_Position = P*V*M*tmp_vertex;
 
