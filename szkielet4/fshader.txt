@@ -4,7 +4,7 @@ uniform sampler2D textureMap0;
 uniform sampler2D textureMap1;
 uniform float shininess; //Polyskliwosc materialu
 
-const int nol = 4; //Liczba zrodel swiatla
+const int nol = 2; //Liczba zrodel swiatla
 
 in vec4 l[nol];
 in vec4 n;

@@ -24,7 +24,6 @@ using namespace glm;
 //Macierze
 mat4  matP;																										//rzutowania
 mat4  matV;																										//widoku
-vec3 camera = vec3(0.0f, 5.0f, -5.0f);																			//camera (vector)
 
 //Ustawienia okna i rzutowania
 int windowWidth=1280;
@@ -38,14 +37,6 @@ int lastTime = 0;
 
 //Uchwyty na shadery
 ShaderProgram *shader;																					//WskaŸnik na obiekt reprezentuj¹cy program cieniuj¹cy.
-/*
-GLuint textures[4];																								//array of texture handles
-
-Model* models[6];																								//array of pointers to models
-Chessboard* chessBoard;																							
-Piece* pieces[35];																								//0-31 all pieces | 32-33 pieces to move | 34 piece to beat
-Match* match;*/
-
 Application *App;
 
 
@@ -67,9 +58,10 @@ void drawObjects() {
 	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
 	glUniform4f(shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
 
-	for (int i = 0; i < 32; ++i)																				//drawing all pieces
+	for (int i = 0; i < 32; i++)																				//drawing all pieces
 		if (App->pieces[i]->getOnBoard())
 			App->pieces[i]->draw(shader);
+	
 	//there to add drawing chessboard from model or primitive
 }
 
@@ -110,10 +102,10 @@ void nextFrame(void) {
 	if (angleY>360) angleY -= 360;
 	if (angleY<0) angleY += 360;
 	/*
-	for (int i = 0; i < 2; ++i)
-		if (App->pieces[32 + i] != null && App->pieces[32 + i]->getMoving())
-			App->pieces[32 + i]->move();
-			*/
+	for (int i = 0; i < 32; ++i)
+		if (App->pieces[i]->getMoving())
+			App->pieces[i]->move();*/
+			
 	glutPostRedisplay();
 }
 
@@ -133,7 +125,7 @@ void initGLUT(int *argc, char** argv) {
 	
 	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT) - windowHeight) / 2);	//Wska¿ pocz¹tkow¹ pozycjê okna
 	glutInitWindowSize(windowWidth,windowHeight); //Wska¿ pocz¹tkowy rozmiar okna
-	glutCreateWindow("SuperChessMasterTurboArcadeEdition"); //Utwórz okno i nadaj mu tytu³
+	glutCreateWindow("SuperChessMasterTurboArcadeEdition X"); //Utwórz okno i nadaj mu tytu³
 	
 	glutReshapeFunc(changeSize);																				//Zarejestruj procedurê changeSize jako procedurê obs³uguj¹ca zmianê rozmiaru okna
 	glutDisplayFunc(displayFrame);																				//Zarejestruj procedurê displayFrame jako procedurê obs³uguj¹ca odœwierzanie okna
