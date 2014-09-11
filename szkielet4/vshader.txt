@@ -23,6 +23,12 @@ out vec4 n;
 out vec4 v;
 out vec2 iTexCoord;
 
+void main(void){
+	gl_Position = P*V*M*vec4(vertex, 1.0);
+	iTexCoord = texCoord;
+}
+
+/*
 void main(void) {
 	vec4 tmp_vertex = vec4(vertex, 1.0);
 	vec4 tmp_normal = vec4(normal, 1.0);
@@ -42,3 +48,4 @@ void main(void) {
 	v = normalize(vec4(0,0,0,1) - V*M*tmp_vertex); //wektor do obserwatora w przestrzeni oka
 	iTexCoord = texCoord;
 }
+*/

@@ -13,6 +13,30 @@ in vec2 iTexCoord;
 
 out vec4 pixelColor; //Zmienna wyjsciowa fragment shadera
 
+void main(void){
+	pixelColor = texture(textureMap0, iTexCoord);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 void main(void) {
 	//Parametry modelu oswietlenia
 	vec4 La = vec4(0.4,0.4,0.4,1); //Kolor swiatla otoczenia
@@ -52,3 +76,4 @@ void main(void) {
 	if(pixelColor != vec4(1,1,1,1))
 		pixelColor += La*Ma;
 }
+*/

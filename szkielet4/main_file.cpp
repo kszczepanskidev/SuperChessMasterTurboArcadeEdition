@@ -58,11 +58,13 @@ void drawObjects() {
 	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
 	glUniform4f(shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
 
+	App->chessBoard->draw(shader);																				//drawing chessboard
+
 	for (int i = 0; i < 32; i++)																				//drawing all pieces
 		if (App->pieces[i]->getOnBoard())
 			App->pieces[i]->draw(shader);
 	
-	//there to add drawing chessboard from model or primitive
+	
 }
 
 //Procedura rysuj¹ca

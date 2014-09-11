@@ -48,12 +48,29 @@ GLuint makeBuffer(vector <unsigned short> data, int vertexSize) {
 	return handle;
 }
 
+GLuint makeBuffer(void *data, int vertexCount, int vertexSize) {
+	GLuint handle;
+
+	glGenBuffers(1, &handle);//Wygeneruj uchwyt na Vertex Buffer Object (VBO), który bêdzie zawiera³ tablicê danych
+	glBindBuffer(GL_ARRAY_BUFFER, handle);  //Uaktywnij wygenerowany uchwyt VBO 
+	glBufferData(GL_ARRAY_BUFFER, vertexCount*vertexSize, data, GL_STATIC_DRAW);//Wgraj tablicê do VBO
+
+	return handle;
+}
+
 void setupVBO(Model &model,	vector <unsigned short> indices, vector <vec3> vertices, vector <vec2> texCoords, vector <vec3> normals) {
 	model.Vertices = makeBuffer(vertices, sizeof(vec3));
 	model.Normals = makeBuffer(normals, sizeof(vec3));
 	model.TexCoords = makeBuffer(texCoords, sizeof(vec2));
 	model.Indices = makeBuffer(indices, sizeof(unsigned short));
 }
+
+void setupVBO(Model &model, float* vert, float* norms, float* texc, int vcount) {
+	model.Vertices = makeBuffer(vert, vcount, sizeof(float)* 3); //Wspó³rzêdne wierzcho³ków
+	model.Normals = makeBuffer(norms, vcount, sizeof(float)* 3);//Wektory normalne wierzcho³ków
+	model.TexCoords = makeBuffer(texc, vcount, sizeof(float)* 2);//Wspó³rzêdne teksturowania
+}
+
 
 Model::Model(string filename, ShaderProgram* shader){
 	string line, type, temp;
@@ -145,6 +162,23 @@ Model::Model(string filename, ShaderProgram* shader){
 	assignVBOtoAttribute(shader, "vertex", Vertices, 3);	//"vertex" odnosi siê do deklaracji "in vec3 vertex;" w vertex shaderze
 	assignVBOtoAttribute(shader, "normal", Normals, 3);		//"normal" odnosi siê do deklaracji "in vec3 normal;" w vertex shaderze
 	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
+	
+	cout << "VAO created | ";
+	cout << "Model initialized" << endl << endl;
+}
+
+Model::Model(float* vert, float* norms, float* texc, int vcount, ShaderProgram* shader){
+
+	setupVBO(*this, vert, norms, texc, vcount);
+	cout << "VBO buffers created | ";
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	assignVBOtoAttribute(shader, "vertex", Vertices, 3);	//"vertex" odnosi siê do deklaracji "in vec3 vertex;" w vertex shaderze
+	assignVBOtoAttribute(shader, "normal", Normals, 3);		//"normal" odnosi siê do deklaracji "in vec3 normal;" w vertex shaderze
+	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
+	IndicesCount = vcount;
 	
 	cout << "VAO created | ";
 	cout << "Model initialized" << endl << endl;

@@ -17,6 +17,7 @@ public:
 	int IndicesCount;
 
 	Model(string, ShaderProgram*);	//loading Wavefront model and VBO, VAO setup
+	Model(float*, float*, float*, int, ShaderProgram*);	//loading model from vertices and VBO, VAO setup
 	~Model();						//VBO, VAO destructor
 };
 
