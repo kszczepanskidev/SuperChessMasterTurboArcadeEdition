@@ -97,7 +97,7 @@ Match::Match() {
 	reverse(moves.begin(), moves.end());
 	pgnfile.close();
 
-	write(this);
+	//write(this);
 }
 
 

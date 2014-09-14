@@ -30,15 +30,26 @@ void Piece::draw(ShaderProgram* shader) {
 }
 
 void Piece::move() {
-	//matM = translate(matM, vec3(float((target.x - current.x) / 25.0f), 0.0f, float((target.y - current.y) / 25.0f)));
-	matM = translate(matM, vec3(float(xDistance / 25.0f), 0.0f, float(yDistance / 25.0f)));
-
-	if ((target.x == current.x) && (target.y == current.y))
+	if (fabs(target.x - xCoord) < 0.00001 && fabs(target.y - yCoord) < 0.00001)
+	{
 		moving = false;
+		current = target;
+		//cout << "x:" << xCoord << " y:" << yCoord << endl;
+	}
+	else {
+		//matM = translate(matM, vec3(float((target.x - current.x) / 25.0f), 0.0f, float((target.y - current.y) / 25.0f)));
+		matM = translate(matM, vec3(float(xDistance / 25.0f), 0.0f, float(yDistance / 25.0f)));
+		xCoord += xDistance / 25.0f;
+		yCoord += yDistance / 25.0f;
+	}
+	
 }
 
 bool Piece::getMoving() {
 	return moving;
+}
+void Piece::setMoving(bool m) {
+	moving = m;
 }
 
 void Piece::promotion(Model* m) {
@@ -46,9 +57,13 @@ void Piece::promotion(Model* m) {
 }
 
 void Piece::setTarget(Square t) {
-	target = t;
-	xDistance = target.x - current.x;
-	yDistance = target.y - current.y;
+	if (!moving) {
+		target = t;
+		xDistance = target.x - current.x;
+		yDistance = target.y - current.y;
+		xSteps = 0;
+		moving = true;
+	}
 }
 
 void Piece::setOnBoard(bool ingame){
@@ -84,4 +99,6 @@ Piece::Piece(Model *m, GLuint *tex, GLuint *specular, Square square, char type) 
 	onBoard = true;
 	moving = false;
 	current = square;
+	xCoord = current.x;
+	yCoord = current.y;
 }

@@ -85,7 +85,7 @@ Model::Model(string filename, ShaderProgram* shader){
 
 	vector<unsigned int> vertexIndices, texCoordsIndices, normalIndices;
 
-	cout << "Loading .OBJ file | ";
+	cout << "Loading .OBJ file" << endl;
 	ifstream objFile(filename.c_str());
 	if (objFile.fail())	{
 		cout << "Error: could not open file" << endl;
@@ -142,7 +142,7 @@ Model::Model(string filename, ShaderProgram* shader){
 		Norms.push_back(tempNormals[normalIndices[i] - 1]);
 	}
 
-	cout << "Model loading complete | ";
+	cout << "Model loading complete" << endl;
 
 	vector<unsigned short> indices;
 	vector<vec3> indexedVertices;
@@ -152,10 +152,10 @@ Model::Model(string filename, ShaderProgram* shader){
 	indexVBO(Verts, Texs, Norms, indices, indexedVertices, indexedTexCoords, indexedNormals);
 	IndicesCount = indices.size();
 
-	cout << "Indexing complete | ";
+	cout << "Indexing complete" << endl;
 
 	setupVBO(*this, indices, indexedVertices, indexedTexCoords, indexedNormals);
-	cout << "VBO buffers created | ";
+	cout << "VBO buffers created" << endl;
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -163,14 +163,14 @@ Model::Model(string filename, ShaderProgram* shader){
 	assignVBOtoAttribute(shader, "normal", Normals, 3);		//"normal" odnosi siê do deklaracji "in vec3 normal;" w vertex shaderze
 	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
 	
-	cout << "VAO created | ";
+	cout << "VAO created" << endl;
 	cout << "Model initialized" << endl << endl;
 }
 
 Model::Model(float* vert, float* norms, float* texc, int vcount, ShaderProgram* shader){
 
 	setupVBO(*this, vert, norms, texc, vcount);
-	cout << "VBO buffers created | ";
+	cout << "VBO buffers created" << endl;
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -180,7 +180,7 @@ Model::Model(float* vert, float* norms, float* texc, int vcount, ShaderProgram* 
 	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
 	IndicesCount = vcount;
 	
-	cout << "VAO created | ";
+	cout << "VAO created" << endl;
 	cout << "Model initialized" << endl << endl;
 }
 

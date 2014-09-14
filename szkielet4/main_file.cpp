@@ -21,6 +21,8 @@
 using namespace std;
 using namespace glm;
 
+int test=2;
+
 //Macierze
 mat4  matP;																										//rzutowania
 mat4  matV;																										//widoku
@@ -103,10 +105,10 @@ void nextFrame(void) {
 	if (angleX<0) angleX += 360;
 	if (angleY>360) angleY -= 360;
 	if (angleY<0) angleY += 360;
-	/*
+	
 	for (int i = 0; i < 32; ++i)
 		if (App->pieces[i]->getMoving())
-			App->pieces[i]->move();*/
+			App->pieces[i]->move();
 			
 	glutPostRedisplay();
 }
@@ -178,8 +180,24 @@ void keyDown(int c, int x, int y){
 	case GLUT_KEY_RIGHT:
 		speedY = -100;
 		break;
-	case GLUT_KEY_DELETE:
-	case 13:
+	case GLUT_KEY_F1:
+		App->pieces[2]->setTarget(App->chessBoard->squares[2][test]);
+		test++;
+		break;
+	case GLUT_KEY_F2:
+		App->pieces[2]->setMoving(false);
+		break;
+	case GLUT_KEY_F3:
+		App->pieces[2]->setTarget(App->chessBoard->squares[2][1]);
+		test = 2;
+		break;
+	case GLUT_KEY_F4:
+		App->pieces[2]->setTarget(App->chessBoard->squares[rand() % 8][(rand() % 4) + 2]);
+		test = 2;
+		break;
+	case GLUT_KEY_F5:
+		App->pieces[rand()%32]->setTarget(App->chessBoard->squares[rand() % 8][rand() % 8]);
+		test = 2;
 		break;
 	}
 }

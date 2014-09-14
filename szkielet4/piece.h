@@ -6,7 +6,7 @@ class Piece {
 	char type;
 	mat4 matM;
 	GLuint *texture, *textureSpecular;
-	float xDistance, yDistance;
+	float xDistance, yDistance, xCoord, yCoord;
 	vector<Square> possibleMoves;
 	bool onBoard, moving;
 	Square current, target;
@@ -20,6 +20,7 @@ public:
 	void setOnBoard(bool);
 	bool getOnBoard();
 	bool getMoving();
+	void setMoving(bool);
 	void setPossibleMoves();
 
 	Piece(Model*, GLuint*, GLuint*, Square, char);

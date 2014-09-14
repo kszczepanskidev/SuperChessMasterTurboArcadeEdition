@@ -1,4 +1,7 @@
+#include <iostream>
 #include "shaderprogram.h"
+
+using namespace std;
 
 //Procedura wczytuje plik do tablicy znaków.
 char* ShaderProgram::readFile(char* fileName) {
@@ -51,19 +54,19 @@ GLuint ShaderProgram::loadShader(GLenum shaderType,char* fileName) {
 
 ShaderProgram::ShaderProgram(char* vertexShaderFile,char* geometryShaderFile,char* fragmentShaderFile) {
 	//Wczytaj vertex shader
-	printf("Loading vertex shader...\n");
+	cout << "Loading vertex shader" << endl;
 	vertexShader=loadShader(GL_VERTEX_SHADER,vertexShaderFile);
 
 	//Wczytaj geometry shader
 	if (geometryShaderFile!=NULL) {
-		printf("Loading geometry shader...\n");
+		cout << "Loading geometry shader" << endl;
 		geometryShader=loadShader(GL_GEOMETRY_SHADER,geometryShaderFile);
 	} else {
 		geometryShader=0;
 	}
 
 	//Wczytaj fragment shader
-	printf("Loading fragment shader...\n");
+	cout << "Loading fragment shader" << endl;
 	fragmentShader=loadShader(GL_FRAGMENT_SHADER,fragmentShaderFile);
 
 	//Wygeneruj uchwyt programu cieniuj¹cego
@@ -90,7 +93,7 @@ ShaderProgram::ShaderProgram(char* vertexShaderFile,char* geometryShaderFile,cha
 		delete []infoLog;
 	}
 
-	printf("Shader program created \n");
+	cout << "Shader program created" << endl << endl;
 }
 
 ShaderProgram::~ShaderProgram() {
