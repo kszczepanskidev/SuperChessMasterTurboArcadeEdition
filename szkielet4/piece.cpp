@@ -37,8 +37,7 @@ void Piece::move() {
 		//cout << "x:" << xCoord << " y:" << yCoord << endl;
 	}
 	else {
-		matM = translate(matM, vec3(float((target.x - current.x) / 25.0f), 0.0f, float((target.y - current.y) / 25.0f)));
-		//matM = translate(matM, vec3(float(xDistance / 25.0f), 0.0f, float(yDistance / 25.0f)));
+		matM = translate(matM, vec3(float(xDistance / 25.0f), 0.0f, float(yDistance / 25.0f)));
 		xCoord += xDistance / 25.0f;
 		yCoord += yDistance / 25.0f;
 	}
