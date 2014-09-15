@@ -30,16 +30,38 @@ void Piece::draw(ShaderProgram* shader) {
 }
 
 void Piece::move() {
-	if (fabs(target.x - xCoord) < 0.00001 && fabs(target.y - yCoord) < 0.00001)
-	{
+	if (fabs(target.x - xCoord) < 0.00001 && fabs(target.y - yCoord) < 0.00001)	{
 		moving = false;
 		current = target;
-		//cout << "x:" << xCoord << " y:" << yCoord << endl;
 	}
 	else {
+		switch (rot) {
+		case 0:
+			matM = rotate(matM, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			break;
+		case 1:
+			matM = rotate(matM, 180.0f, vec3(0.0f, 1.0f, 0.0f));
+			break;
+		case 2:
+			matM = rotate(matM, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+			break;
+		}
+
 		matM = translate(matM, vec3(float(xDistance / 25.0f), 0.0f, float(yDistance / 25.0f)));
 		xCoord += xDistance / 25.0f;
 		yCoord += yDistance / 25.0f;
+
+		switch (rot) {
+		case 0:
+			matM = rotate(matM, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+			break;
+		case 1:
+			matM = rotate(matM, -180.0f, vec3(0.0f, 1.0f, 0.0f));
+			break;
+		case 2:
+			matM = rotate(matM, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			break;
+		}
 	}
 	
 }
@@ -101,15 +123,20 @@ Piece::Piece(Model *m, GLuint *tex, GLuint *specular, Square square, char type) 
 	yCoord = current.y;
 
 	if (current.x == 1.75f){	//rz¹d 1
-		if ((current.y == 1.25f) || (current.y == -1.25f) || (current.y == 0.25f))
+		if ((current.y == 1.25f) || (current.y == -1.25f) || (current.y == 0.25f)) {
+			rot = 0;
 			matM = rotate(matM, -90.0f, vec3(0.0f, 1.0f, 0.0f));
-		if ((current.y == 0.75f) || (current.y == -0.75f))
+		}
+		if ((current.y == 0.75f) || (current.y == -0.75f)) {
+			rot = 1;
 			matM = rotate(matM, -180.0f, vec3(0.0f, 1.0f, 0.0f));
+		}
 
 	}
 	if (current.x == -1.75f){	//rz¹d 8
-		if ((current.y == 1.25f) || (current.y == -1.25f) || (current.y == 0.25f))
+		if ((current.y == 1.25f) || (current.y == -1.25f) || (current.y == 0.25f)) {
+			rot = 2;
 			matM = rotate(matM, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-
+		}
 	}
 }

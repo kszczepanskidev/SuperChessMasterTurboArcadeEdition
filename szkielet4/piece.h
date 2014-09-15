@@ -10,6 +10,7 @@ class Piece {
 	vector<Square> possibleMoves;
 	bool onBoard, moving;
 	Square current, target;
+	int rot;
 
 public:
 	void draw(ShaderProgram*);
