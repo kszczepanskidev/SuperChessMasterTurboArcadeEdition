@@ -14,15 +14,16 @@ in vec2 texCoord; //wspolrzedne teksturowania
 
 //Zmienne wyjsciowe dla fragment shadera
 out vec2 iTexCoord;
-out vec4 lgPos[2];
+out vec4 lgPos1;
+out vec4 lgPos2;
 out vec4 n;
 out vec4 v;
 
 void main(void){
-	lgPos[0] = normalize(V*(lightPosition1 - M*vec4(vertex,1))); //wektor do swiatla w przestrzeni oka
-	lgPos[1] = normalize(V*(lightPosition2 - M*vec4(vertex,1))); //wektor do swiatla w przestrzeni oka
-	n = normalize(V*M*vec4(normal,1)); //wektor normalny w przestrzeni oka		transpose(invert(M))
-	v = normalize(vec4(0,0,0,1) - V*M*vec4(vertex,1));	//wektor do obserwatora w przestrzeni oka
+	lgPos1 = V*(lightPosition1 - M*vec4(vertex, 1));	//wektor z wierzcholka do swiatla w przestrzeni oka
+	lgPos2 = V*(lightPosition2 - M*vec4(vertex, 1));	//wektor z wierzcholka do swiatla w przestrzeni oka
+	n = V*M*vec4(normal, 0);							//wektor normalny wierzcholka w przestrzeni oka			//transpose(inverse(M))
+	v = vec4(0, 0, 0, 1) - V*M*vec4(vertex, 1);			//wektor z wierzcholka do obserwatora w przestrzeni oka
 
 	gl_Position = P*V*M*vec4(vertex, 1);
 	iTexCoord = texCoord;

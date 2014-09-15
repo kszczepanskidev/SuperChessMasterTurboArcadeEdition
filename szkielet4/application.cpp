@@ -29,7 +29,7 @@ Application::Application(ShaderProgram *shader) {
 	textures[0] = readTexture("data\\textures\\blackpiece.tga");
 	textures[1] = readTexture("data\\textures\\whitepiece.tga");
 	textures[2] = readTexture("data\\textures\\chessboardSpec3.tga"); //board.tga
-	textures[3] = readTexture("data\\textures\\glass.tga"); //wood.tga
+	textures[3] = readTexture("data\\textures\\glass2.tga"); //wood.tga
 	textures[4] = readTexture("data\\textures\\chessboard.tga");
 
 
@@ -39,13 +39,6 @@ Application::Application(ShaderProgram *shader) {
 		for (int j = 0; j < 8; ++j) {
 			chessBoard->squares[i][j].x = (3.5 - j)*0.5f;
 			chessBoard->squares[i][j].y = (-3.5 + i)*0.5f;
-		}
-	for (int i = 0; i < 8; ++i)
-		for (int j = 0; j < 8; j++) {
-			if (j<2 || j>5)
-				chessBoard->squares[i][j].empty = false;
-			else
-				chessBoard->squares[i][j].empty = true;
 		}
 
 	//Init pieces

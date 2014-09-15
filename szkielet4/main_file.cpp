@@ -57,8 +57,8 @@ void drawObjects() {
 	glUniform1i(shader->getUniformLocation("textureMap0"), 0);
 	glUniform1i(shader->getUniformLocation("textureMap1"), 1);
 
-	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, -2, 0, 1);
-	glUniform4f(shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
+	glUniform4f(shader->getUniformLocation("lightPosition1"), 4, 2, 4, 1);
+	glUniform4f(shader->getUniformLocation("lightPosition2"), -4, 2, -4, 1);
 
 	App->chessBoard->draw(shader);																				//drawing chessboard
 	for (int i = 0; i < 32; i++)																				//drawing all pieces

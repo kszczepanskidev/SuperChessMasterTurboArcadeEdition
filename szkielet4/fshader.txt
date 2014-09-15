@@ -7,25 +7,42 @@ uniform float shininess; //Polyskliwosc materialu
 
 //Zmienne wyjsciowe z vertex shadera
 in vec2 iTexCoord;
-in vec4 lgPos[2];
+in vec4 lgPos1;
+in vec4 lgPos2;
 in vec4 n;
 in vec4 v;
 
 out vec4 pixelColor; //Zmienna wyjsciowa fragment shadera
 
 void main(void){
+	vec4 lgPos1N = normalize(lgPos1);
+	vec4 lgPos2N = normalize(lgPos2);
+	vec4 nN = normalize(n);
+	vec4 vN = normalize(v);
+	
+	vec4 r[2];
 	float nl[2];
-	vec4 La = vec4(0, 0, 0, 1); //Kolor swiatla otoczenia
+	float rv[2];
+
+	vec4 La = vec4(0.5, 0.5, 0.5, 0.5); //Kolor swiatla otoczenia
 	vec4 Ma = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla otoczenia
 
-	vec4 Ld = vec4(1, 1, 1, 1); //Kolor swiatla rozpraszanego
+	vec4 Ld = vec4(0.7, 0.7, 0.7, 1); //Kolor swiatla rozpraszanego
 	vec4 Md = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla rozpraszanego
-	
-	nl[0] = max(dot(normalize(n), normalize(lgPos[0])), 0);
-	nl[1] = max(dot(normalize(n), normalize(lgPos[1])), 0);
 
-	pixelColor = La*Ma + Ld*Md*vec4(nl[0], nl[0], nl[0], 1);
-	//pixelColor += La*Ma + Ld*Md*vec4(nl[1], nl[1], nl[1], 1);
+	vec4 Ls = vec4(1, 1, 1, 1);	//Kolor swiatla odbijanego
+	vec4 Ms = texture(textureMap1, iTexCoord); //Kolor materialu dla swiatla rozpraszanego
+
+	r[0] = reflect(-lgPos1N, nN);
+	r[1] = reflect(-lgPos2N, nN);
+
+	nl[0] = max(dot(lgPos1N, nN), 0);
+	nl[1] = max(dot(lgPos2N, nN), 0);
+
+	rv[0] = max(dot(r[0], vN), 0);
+	rv[1] = max(dot(r[1], vN), 0);
+
+	pixelColor = La*Ma + Ld*Md*vec4(vec3(max(nl[0], nl[1])), 1) + Ls*Ms*pow(max(rv[0], rv[1]),shininess);
 }
 
 

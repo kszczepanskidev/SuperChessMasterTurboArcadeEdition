@@ -14,7 +14,7 @@ using namespace glm;
 
 void Piece::draw(ShaderProgram* shader) {
 	glUniformMatrix4fv(shader->getUniformLocation("M"), 1, false, value_ptr(matM));
-	glUniform1f(shader->getUniformLocation("shininess"), 25);
+	glUniform1f(shader->getUniformLocation("shininess"), 10);
 	
 	glBindVertexArray(model->VAO);	
 

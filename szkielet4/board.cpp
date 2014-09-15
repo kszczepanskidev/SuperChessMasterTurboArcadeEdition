@@ -17,7 +17,7 @@ void Chessboard::draw(ShaderProgram* shader) {
 
 	matM = translate(rotate(scale(mat4(1.0f), vec3(1.0f, 0.25f, 1.0f)), -90.0f, vec3(0, 1, 0)), vec3(0.0f, -1.2f, 0.0f));
 	glUniformMatrix4fv(shader->getUniformLocation("M"), 1, false, value_ptr(matM));
-	glUniform1f(shader->getUniformLocation("shininess"), 25.0f);
+	glUniform1f(shader->getUniformLocation("shininess"), 30.0f);
 
 	glDrawArrays(GL_TRIANGLES, 0, model->IndicesCount); // Starting from vertex 0; 438 vertices total -> 146 triangles
 	glBindVertexArray(0);
