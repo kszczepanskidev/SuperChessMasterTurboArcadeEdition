@@ -57,11 +57,10 @@ void drawObjects() {
 	glUniform1i(shader->getUniformLocation("textureMap0"), 0);
 	glUniform1i(shader->getUniformLocation("textureMap1"), 1);
 
-	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, 1, 4, 1);
+	glUniform4f(shader->getUniformLocation("lightPosition1"), 0, -2, 0, 1);
 	glUniform4f(shader->getUniformLocation("lightPosition2"), 0, 4, -4, 1);
 
 	App->chessBoard->draw(shader);																				//drawing chessboard
-
 	for (int i = 0; i < 32; i++)																				//drawing all pieces
 		if (App->pieces[i]->getOnBoard())
 			App->pieces[i]->draw(shader);
@@ -98,8 +97,8 @@ void nextFrame(void) {
 	int interval=actTime-lastTime;
 	lastTime=actTime;
 
-	angleX += speedX*interval / 1000.0;
-	angleY += speedY*interval / 1000.0;
+	angleX += speedX*interval / 1000.0f;
+	angleY += speedY*interval / 1000.0f;
 
 	if (angleX>360) angleX -= 360;
 	if (angleX<0) angleX += 360;

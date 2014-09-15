@@ -5,8 +5,8 @@ int chessboardVertexCount = 438;
 
 float chessboardVertices[] = {
 	-2.5f, -0.5f, -2.5f,	//Bottom
-	2.5f, -0.5f, 2.5f, 
-	-2.5f, -0.5f, 2.5f, 
+	2.5f, -0.5f, 2.5f,
+	-2.5f, -0.5f, 2.5f,
 	-2.5f, -0.5f, -2.5f,
 	2.5f, -0.5f, 2.5f,
 	2.5f, -0.5f, -2.5f,
@@ -1085,7 +1085,7 @@ float chessboardNormals[] = {
 	0.0f, 1.0f, 0.0f,
 	0.0f, 1.0f, 0.0f,
 	0.0f, 1.0f, 0.0f,
-	
+
 	0.0f, 1.0f, 0.0f,		//West top (with SW corner)
 	0.0f, 1.0f, 0.0f,
 	0.0f, 1.0f, 0.0f,

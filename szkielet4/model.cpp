@@ -162,7 +162,8 @@ Model::Model(string filename, ShaderProgram* shader){
 	assignVBOtoAttribute(shader, "vertex", Vertices, 3);	//"vertex" odnosi siê do deklaracji "in vec3 vertex;" w vertex shaderze
 	assignVBOtoAttribute(shader, "normal", Normals, 3);		//"normal" odnosi siê do deklaracji "in vec3 normal;" w vertex shaderze
 	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
-	
+	glBindVertexArray(0);
+
 	cout << "VAO created" << endl;
 	cout << "Model initialized" << endl << endl;
 }
@@ -174,11 +175,11 @@ Model::Model(float* vert, float* norms, float* texc, int vcount, ShaderProgram* 
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-
 	assignVBOtoAttribute(shader, "vertex", Vertices, 3);	//"vertex" odnosi siê do deklaracji "in vec3 vertex;" w vertex shaderze
 	assignVBOtoAttribute(shader, "normal", Normals, 3);		//"normal" odnosi siê do deklaracji "in vec3 normal;" w vertex shaderze
 	assignVBOtoAttribute(shader, "texCoord", TexCoords, 2);	//"texCoord" odnosi siê do deklaracji "in vec2 texCoord;" w vertex shaderze
 	IndicesCount = vcount;
+	glBindVertexArray(0);
 	
 	cout << "VAO created" << endl;
 	cout << "Model initialized" << endl << endl;

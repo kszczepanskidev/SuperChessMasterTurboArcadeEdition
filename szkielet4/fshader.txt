@@ -1,24 +1,32 @@
 #version 330
 
+//Zmienne jednorodne
 uniform sampler2D textureMap0;
 uniform sampler2D textureMap1;
 uniform float shininess; //Polyskliwosc materialu
 
-const int nol = 4; //Liczba zrodel swiatla
-
-in vec4 l[nol];
+//Zmienne wyjsciowe z vertex shadera
+in vec2 iTexCoord;
+in vec4 lgPos[2];
 in vec4 n;
 in vec4 v;
-in vec2 iTexCoord;
 
 out vec4 pixelColor; //Zmienna wyjsciowa fragment shadera
 
 void main(void){
-	pixelColor = texture(textureMap0, iTexCoord);
+	float nl[2];
+	vec4 La = vec4(0, 0, 0, 1); //Kolor swiatla otoczenia
+	vec4 Ma = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla otoczenia
+
+	vec4 Ld = vec4(1, 1, 1, 1); //Kolor swiatla rozpraszanego
+	vec4 Md = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla rozpraszanego
+	
+	nl[0] = max(dot(normalize(n), normalize(lgPos[0])), 0);
+	nl[1] = max(dot(normalize(n), normalize(lgPos[1])), 0);
+
+	pixelColor = La*Ma + Ld*Md*vec4(nl[0], nl[0], nl[0], 1);
+	//pixelColor += La*Ma + Ld*Md*vec4(nl[1], nl[1], nl[1], 1);
 }
-
-
-
 
 
 
@@ -43,30 +51,30 @@ void main(void) {
 	vec4 Ma = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla otoczenia
 
 	vec4 Ld = vec4(0.25,0.25,0.25,1); //Kolor swiatla rozpraszanego
-	vec4 Md = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla rozpraszanego
+	vec4 Md = texture(textureMap1, iTexCoord); //Kolor materialu dla swiatla rozpraszanego
 
 	vec4 Ls = vec4(1,1,1,1); //Kolor swiatla odbijanego
 	vec4 Ms = texture(textureMap1, iTexCoord); //Kolor materialu dla swiatla odbijanego
 
 	int i;
-	vec4 ml[nol];
-	vec4 mr[nol];
+	vec4 ml[lightscount];
+	vec4 mr[lightscount];
 
 	//Wektory potrzebne do obliczenia modelu oswietlenia
 	vec4 mn = normalize(n);
-	for(i = 0; i < nol; i++) {
+	for(i = 0; i < lightscount; i++) {
 		ml[i] = normalize(l[i]);
 		mr[i] = reflect(-ml[i], mn);
 	}
 	vec4 mv = normalize(v);
 
-	float nl[nol];
-	float rv[nol];
+	float nl[lightscount];
+	float rv[lightscount];
 
 	pixelColor = vec4(0,0,0,1);
 
 	//Obliczenie modelu oswietlenia
-	for(i = 0; i < nol; i++) {
+	for(i = 0; i < lightscount; i++) {
 		nl[i] = max(dot(ml[i], mn),0);
 		rv[i] = pow(max(dot(mr[i], mv),0), shininess);
 		if(pixelColor != vec4(1,1,1,1))

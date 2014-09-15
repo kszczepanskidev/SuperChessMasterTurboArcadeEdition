@@ -19,7 +19,7 @@ public:
 
 	void draw(ShaderProgram*);
 
-	Chessboard(Model*, GLuint*);
+	Chessboard(Model*, GLuint*, GLuint*);
 };
 
 #endif

@@ -13,7 +13,8 @@ using namespace glm;
 
 
 void Piece::draw(ShaderProgram* shader) {
-	glUniformMatrix4fv(shader->getUniformLocation("M"), 1, false, value_ptr(matM));		//glUniform1f(shader->getUniformLocation("shininess"), 25);
+	glUniformMatrix4fv(shader->getUniformLocation("M"), 1, false, value_ptr(matM));
+	glUniform1f(shader->getUniformLocation("shininess"), 25);
 	
 	glBindVertexArray(model->VAO);	
 
@@ -24,9 +25,8 @@ void Piece::draw(ShaderProgram* shader) {
 	glActiveTexture(GL_TEXTURE1);										
 	glBindTexture(GL_TEXTURE_2D, *textureSpecular);
 
-
 	glDrawElements(GL_TRIANGLES, model->IndicesCount, GL_UNSIGNED_SHORT, NULL);
-	//glBindVertexArray(0);
+	glBindVertexArray(0);
 }
 
 void Piece::move() {

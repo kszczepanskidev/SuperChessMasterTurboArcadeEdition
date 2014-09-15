@@ -28,13 +28,13 @@ Application::Application(ShaderProgram *shader) {
 	//Init textures
 	textures[0] = readTexture("data\\textures\\blackpiece.tga");
 	textures[1] = readTexture("data\\textures\\whitepiece.tga");
-	textures[2] = readTexture("data\\textures\\board.tga");
-	textures[3] = readTexture("data\\textures\\wood.tga");
+	textures[2] = readTexture("data\\textures\\chessboardSpec3.tga"); //board.tga
+	textures[3] = readTexture("data\\textures\\glass.tga"); //wood.tga
 	textures[4] = readTexture("data\\textures\\chessboard.tga");
 
 
 	//Init chessboard
-	chessBoard = new Chessboard(models[6], &textures[4]);
+	chessBoard = new Chessboard(models[6], &textures[4], &textures[2]);
 	for (int i = 0; i < 8; ++i)
 		for (int j = 0; j < 8; ++j) {
 			chessBoard->squares[i][j].x = (3.5 - j)*0.5f;

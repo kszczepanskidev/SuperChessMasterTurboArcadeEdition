@@ -95,6 +95,7 @@
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="chessboard.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="pgn.h" />
     <ClInclude Include="piece.h" />

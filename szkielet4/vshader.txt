@@ -4,48 +4,26 @@
 uniform mat4 P;
 uniform mat4 V;
 uniform mat4 M;
-uniform vec4 lpoz1;
-uniform vec4 lpoz2;
-uniform vec4 lpoz3;
-uniform vec4 lpoz4;
-//uniform vec4 lpoz5;
-
-const int nol = 4; //Liczba zrodel swiatla
+uniform vec4 lightPosition1;
+uniform vec4 lightPosition2;
 
 //Atrybuty
 in vec3 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
 in vec3 normal; //wektor normalny w wierzcholku
 in vec2 texCoord; //wspolrzedne teksturowania
 
-//Zmienne wyjsciowe
-out vec4 l[nol];
+//Zmienne wyjsciowe dla fragment shadera
+out vec2 iTexCoord;
+out vec4 lgPos[2];
 out vec4 n;
 out vec4 v;
-out vec2 iTexCoord;
 
 void main(void){
-	gl_Position = P*V*M*vec4(vertex, 1.0);
+	lgPos[0] = normalize(V*(lightPosition1 - M*vec4(vertex,1))); //wektor do swiatla w przestrzeni oka
+	lgPos[1] = normalize(V*(lightPosition2 - M*vec4(vertex,1))); //wektor do swiatla w przestrzeni oka
+	n = normalize(V*M*vec4(normal,1)); //wektor normalny w przestrzeni oka		transpose(invert(M))
+	v = normalize(vec4(0,0,0,1) - V*M*vec4(vertex,1));	//wektor do obserwatora w przestrzeni oka
+
+	gl_Position = P*V*M*vec4(vertex, 1);
 	iTexCoord = texCoord;
 }
-
-/*
-void main(void) {
-	vec4 tmp_vertex = vec4(vertex, 1.0);
-	vec4 tmp_normal = vec4(normal, 1.0);
-
-	vec4 lpoz[nol];
-	lpoz[0] = lpoz1;
-	lpoz[1] = lpoz2;
-	lpoz[2] = lpoz3;
-	lpoz[3] = lpoz4;
-	//lpoz[4] = lpoz5;
-
-	gl_Position = P*V*M*tmp_vertex;
-
-	for(int i = 0; i < nol; i++)
-		l[i] = normalize(V*(lpoz[i] - M*tmp_vertex)); //wektor do swiatla w przestrzeni oka
-	n = normalize(V*M*tmp_normal); //wektor normalny w przestrzeni oka
-	v = normalize(vec4(0,0,0,1) - V*M*tmp_vertex); //wektor do obserwatora w przestrzeni oka
-	iTexCoord = texCoord;
-}
-*/
