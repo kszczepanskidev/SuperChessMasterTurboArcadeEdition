@@ -26,7 +26,7 @@ Application::Application(ShaderProgram *shader) {
 	models[6] = new Model(vert, norms, texc, vcount, shader);
 
 	//Init textures
-	textures[0] = readTexture("data\\textures\\blackpiece.tga");
+	textures[0] = readTexture("data\\textures\\blackpiece2.tga");
 	textures[1] = readTexture("data\\textures\\whitepiece.tga");
 	textures[2] = readTexture("data\\textures\\chessboardSpec3.tga"); //board.tga
 	textures[3] = readTexture("data\\textures\\glass2.tga"); //wood.tga

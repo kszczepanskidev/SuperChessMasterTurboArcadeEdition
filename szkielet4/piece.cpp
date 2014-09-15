@@ -99,4 +99,17 @@ Piece::Piece(Model *m, GLuint *tex, GLuint *specular, Square square, char type) 
 	current = square;
 	xCoord = current.x;
 	yCoord = current.y;
+
+	if (current.x == 1.75f){	//rz¹d 1
+		if ((current.y == 1.25f) || (current.y == -1.25f) || (current.y == 0.25f))
+			matM = rotate(matM, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+		if ((current.y == 0.75f) || (current.y == -0.75f))
+			matM = rotate(matM, -180.0f, vec3(0.0f, 1.0f, 0.0f));
+
+	}
+	if (current.x == -1.75f){	//rz¹d 8
+		if ((current.y == 1.25f) || (current.y == -1.25f) || (current.y == 0.25f))
+			matM = rotate(matM, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+
+	}
 }

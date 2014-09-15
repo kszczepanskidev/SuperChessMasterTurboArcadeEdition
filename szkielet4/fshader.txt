@@ -24,14 +24,14 @@ void main(void){
 	float nl[2];
 	float rv[2];
 
-	vec4 La = vec4(0.5, 0.5, 0.5, 0.5); //Kolor swiatla otoczenia
+	vec4 La = vec4(0.3, 0.3, 0.3, 1); //Kolor swiatla otoczenia
 	vec4 Ma = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla otoczenia
 
 	vec4 Ld = vec4(0.7, 0.7, 0.7, 1); //Kolor swiatla rozpraszanego
 	vec4 Md = texture(textureMap0, iTexCoord); //Kolor materialu dla swiatla rozpraszanego
 
 	vec4 Ls = vec4(1, 1, 1, 1);	//Kolor swiatla odbijanego
-	vec4 Ms = texture(textureMap1, iTexCoord); //Kolor materialu dla swiatla rozpraszanego
+	vec4 Ms = texture(textureMap1, iTexCoord); //Kolor materialu dla swiatla odbitego
 
 	r[0] = reflect(-lgPos1N, nN);
 	r[1] = reflect(-lgPos2N, nN);
@@ -42,7 +42,8 @@ void main(void){
 	rv[0] = max(dot(r[0], vN), 0);
 	rv[1] = max(dot(r[1], vN), 0);
 
-	pixelColor = La*Ma + Ld*Md*vec4(vec3(max(nl[0], nl[1])), 1) + Ls*Ms*pow(max(rv[0], rv[1]),shininess);
+	//pixelColor = La*Ma + Ld*Md*vec4(vec3(max(nl[0], nl[1])), 1) + Ls*Ms*pow(max(rv[0], rv[1]),shininess);
+	pixelColor = La*Ma + Ld*Md*(vec4(vec3(max(nl[0], nl[1])), 1) + 0.2*vec4(vec3(min(nl[0], nl[1])), 1)) + Ls*Ms*(pow(max(rv[0], rv[1]),shininess) + 0.2*pow(min(rv[0], rv[1]),shininess));
 }
 
 
