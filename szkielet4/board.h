@@ -5,7 +5,8 @@
 
 struct Square {
 	float x, y;
-	char rank, file;
+	int row, col;								
+	int piece;								//side: -1 black | 1 white | 0 empty
 };
 
 

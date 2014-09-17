@@ -9,22 +9,23 @@ class Piece {
 	float xDistance, yDistance, xCoord, yCoord;
 	vector<Square> possibleMoves;
 	bool onBoard, moving;
-	Square current, target;
+	Square *current, *target;
 	int rot;
 
 public:
+	int color;
 	void draw(ShaderProgram*);
-	void move();
+	void move(Chessboard*);
 	void promotion(Model*);
 
-	void setTarget(Square);
+	void setTarget(Square*);
 	void setOnBoard(bool);
 	bool getOnBoard();
 	bool getMoving();
 	void setMoving(bool);
-	void setPossibleMoves();
+	void setPossibleMoves(Chessboard*);
 
-	Piece(Model*, GLuint*, GLuint*, Square, char);
+	Piece(Model*, GLuint*, GLuint*, Square*, char);
 };
 
 #endif

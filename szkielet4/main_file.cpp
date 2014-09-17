@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <iterator>
+#include <ctime>
 
 #include "GL/glew.h"
 #include "GL/freeglut.h"
@@ -107,7 +108,7 @@ void nextFrame(void) {
 	
 	for (int i = 0; i < 32; ++i)
 		if (App->pieces[i]->getMoving())
-			App->pieces[i]->move();
+			App->pieces[i]->move(App->chessBoard);
 			
 	glutPostRedisplay();
 }
@@ -180,25 +181,37 @@ void keyDown(int c, int x, int y){
 		speedY = -100;
 		break;
 	case GLUT_KEY_F1:
-		App->pieces[2]->setTarget(App->chessBoard->squares[2][test]);
+		App->pieces[2]->setTarget(&App->chessBoard->squares[2][test]);
 		test++;
 		break;
 	case GLUT_KEY_F2:
 		App->pieces[2]->setMoving(false);
 		break;
 	case GLUT_KEY_F3:
-		App->pieces[2]->setTarget(App->chessBoard->squares[2][1]);
+		App->pieces[2]->setTarget(&App->chessBoard->squares[2][1]);
 		test = 2;
 		break;
 	case GLUT_KEY_F4:
-		App->pieces[2]->setTarget(App->chessBoard->squares[rand() % 8][(rand() % 4) + 2]);
-		test = 2;
+		App->pieces[2]->setTarget(&App->chessBoard->squares[rand() % 8][(rand() % 4) + 2]);
 		break;
 	case GLUT_KEY_F5:
-		App->pieces[rand()%32]->setTarget(App->chessBoard->squares[rand() % 8][rand() % 8]);
-		test = 2;
+		int x, y;
+		do {
+			x = rand() % 8;
+			y = rand() % 8;
+		} while (App->chessBoard->squares[x][y].piece != 0);
+		App->pieces[rand() % 32]->setTarget(&App->chessBoard->squares[x][y]);
+		break;
+	case GLUT_KEY_F6:
+		system("cls");
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++)
+			cout << App->chessBoard->squares[i][j].piece;
+		cout << endl;	
+	}
 		break;
 	}
+
 }
 
 
@@ -210,7 +223,7 @@ void keyUp(int c, int x, int y){
 }
 
 int main(int argc, char** argv) {
-
+	srand(time(NULL));
 	initGLUT(&argc,argv);
 	initGLEW();
 	initOpenGL(); 

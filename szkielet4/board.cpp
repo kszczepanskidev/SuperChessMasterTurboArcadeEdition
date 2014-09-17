@@ -29,4 +29,8 @@ Chessboard::Chessboard(Model* m, GLuint* tex, GLuint* specular) {
 	matM = mat4(1.0f);
 	texture = tex;
 	textureSpecular = specular;
+
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			squares[i][j].piece = 0;
 }
