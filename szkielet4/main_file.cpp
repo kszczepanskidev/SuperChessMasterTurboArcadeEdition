@@ -167,6 +167,7 @@ void cleanShaders() {
 
 
 void keyDown(int c, int x, int y){
+	int temp;
 	switch (c) {
 	case GLUT_KEY_UP:
 		speedX = 100;
@@ -185,7 +186,8 @@ void keyDown(int c, int x, int y){
 		test++;
 		break;
 	case GLUT_KEY_F2:
-		App->pieces[2]->setMoving(false);
+		temp = rand() % App->pieces[2]->possibleMoves.size();// 2;//rand() % 32;
+		App->pieces[2]->setTarget(&App->pieces[2]->possibleMoves[temp]);
 		break;
 	case GLUT_KEY_F3:
 		App->pieces[2]->setTarget(&App->chessBoard->squares[2][1]);
@@ -204,11 +206,11 @@ void keyDown(int c, int x, int y){
 		break;
 	case GLUT_KEY_F6:
 		system("cls");
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++)
-			cout << App->chessBoard->squares[i][j].piece;
-		cout << endl;	
-	}
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++)
+				cout << App->chessBoard->squares[i][j].piece;
+			cout << endl;
+		}
 		break;
 	}
 

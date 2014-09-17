@@ -332,24 +332,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 		
 		break;
 	case 'p':
-		if (color = 1) {
-			if (x == 1) {
-				if (!board->squares[y][x + 1].piece) {
-					possibleMoves.push_back(board->squares[y][x + 1]);
-					if (!board->squares[y][x + 2].piece)
-						possibleMoves.push_back(board->squares[y][x + 2]);
-				}
-			}
-			else {
-				if (!board->squares[y][x + 1].piece)
-					possibleMoves.push_back(board->squares[y][x + 1]);
-				if (board->squares[y + 1][x + 1].piece != color)
-					possibleMoves.push_back(board->squares[y + 1][x + 1]);
-				if (board->squares[y - 1][x + 1].piece != color)
-					possibleMoves.push_back(board->squares[y - 1][x + 1]);
-			}
-		}
-		else {
+		if (color == 1) {
 			if (x == 1) {
 				if (!board->squares[y][x - 1].piece) {
 					possibleMoves.push_back(board->squares[y][x - 1]);
@@ -366,12 +349,30 @@ void Piece::setPossibleMoves(Chessboard* board) {
 					possibleMoves.push_back(board->squares[y - 1][x - 1]);
 			}
 		}
+		else {
+			if (x == 1) {
+				if (!board->squares[y][x + 1].piece) {
+					possibleMoves.push_back(board->squares[y][x + 1]);
+					if (!board->squares[y][x + 2].piece)
+						possibleMoves.push_back(board->squares[y][x + 2]);
+				}
+			}
+			else {
+				if (!board->squares[y][x + 1].piece)
+					possibleMoves.push_back(board->squares[y][x + 1]);
+				if (board->squares[y + 1][x + 1].piece != color)
+					possibleMoves.push_back(board->squares[y + 1][x + 1]);
+				if (board->squares[y - 1][x + 1].piece != color)
+					possibleMoves.push_back(board->squares[y - 1][x + 1]);
+			}
+		}
 		break;
 	}
 }
 
-Piece::Piece(Model *m, GLuint *tex, GLuint *specular, Square* square, char type) {
+Piece::Piece(Model *m, GLuint *tex, GLuint *specular, Square* square, char t) {
 	model = m;
+	type = t;
 	matM = translate(mat4(1.0f), vec3(square->x, 0.0f, square->y));
 	texture = tex;
 	textureSpecular = specular;

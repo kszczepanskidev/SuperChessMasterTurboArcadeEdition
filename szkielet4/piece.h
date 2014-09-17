@@ -7,13 +7,14 @@ class Piece {
 	mat4 matM;
 	GLuint *texture, *textureSpecular;
 	float xDistance, yDistance, xCoord, yCoord;
-	vector<Square> possibleMoves;
 	bool onBoard, moving;
 	Square *current, *target;
 	int rot;
 
 public:
 	int color;
+	vector<Square> possibleMoves;
+
 	void draw(ShaderProgram*);
 	void move(Chessboard*);
 	void promotion(Model*);
