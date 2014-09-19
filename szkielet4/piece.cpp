@@ -383,7 +383,7 @@ Piece::Piece(Model *m, GLuint *tex, GLuint *specular, Square* square, char t) {
 	yCoord = current->y;
 
 	if (current->x == 1.75f){	//rz¹d 1
-		if ((current->y == 1.25f) || (current->y == -1.25f) || (current->y == 0.25f)) {
+		if ((current->y == 1.25f) || (current->y == -1.25f) || (current->y == -0.25f)) {
 			rot = 0;
 			matM = rotate(matM, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 		}
@@ -394,7 +394,7 @@ Piece::Piece(Model *m, GLuint *tex, GLuint *specular, Square* square, char t) {
 
 	}
 	if (current->x == -1.75f){	//rz¹d 8
-		if ((current->y == 1.25f) || (current->y == -1.25f) || (current->y == 0.25f)) {
+		if ((current->y == 1.25f) || (current->y == -1.25f) || (current->y == -0.25f)) {
 			rot = 2;
 			matM = rotate(matM, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 		}

@@ -26,8 +26,8 @@ Application::Application(ShaderProgram *shader) {
 	models[6] = new Model(vert, norms, texc, vcount, shader);
 
 	//Init textures
-	textures[0] = readTexture("data\\textures\\blackpiece2.tga");
-	textures[1] = readTexture("data\\textures\\whitepiece.tga");
+	textures[0] = readTexture("data\\textures\\whitepiece.tga");
+	textures[1] = readTexture("data\\textures\\blackpiece2.tga");
 	textures[2] = readTexture("data\\textures\\chessboardSpec3.tga"); //board.tga
 	textures[3] = readTexture("data\\textures\\glass2.tga"); //wood.tga
 	textures[4] = readTexture("data\\textures\\chessboard.tga");
@@ -38,14 +38,14 @@ Application::Application(ShaderProgram *shader) {
 	for (int i = 0; i < 8; ++i)
 		for (int j = 0; j < 8; ++j) {
 			chessBoard->squares[i][j].x = (3.5 - j)*0.5f;
-			chessBoard->squares[i][j].y = (-3.5 + i)*0.5f;
+			chessBoard->squares[i][j].y = (3.5 - i)*0.5f;
 		}
 
 	for (int i = 0; i < 8; i++) {
-		chessBoard->squares[i][0].piece = -1;
-		chessBoard->squares[i][1].piece = -1;
-		chessBoard->squares[i][6].piece = 1;
-		chessBoard->squares[i][7].piece = 1;
+		chessBoard->squares[i][0].piece = 1;
+		chessBoard->squares[i][1].piece = 1;
+		chessBoard->squares[i][6].piece = -1;
+		chessBoard->squares[i][7].piece = -1;
 	}
 
 	//Init pieces
@@ -78,9 +78,9 @@ Application::Application(ShaderProgram *shader) {
 
 	for (int i = 0; i < 32; i++) {
 		if (i<16)
-			pieces[i]->color = -1;
-		else if (i>15)
 			pieces[i]->color = 1;
+		else if (i>15)
+			pieces[i]->color = -1;
 		pieces[i]->setPossibleMoves(chessBoard);
 	}
 

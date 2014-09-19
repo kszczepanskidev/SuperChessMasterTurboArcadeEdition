@@ -208,7 +208,7 @@ void keyDown(int c, int x, int y){
 		system("cls");
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++)
-				cout << App->chessBoard->squares[i][j].piece;
+				cout << App->chessBoard->squares[i][j].piece << "\t";
 			cout << endl;
 		}
 		break;
