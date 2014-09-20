@@ -96,7 +96,7 @@ bool Piece::getOnBoard() {
 	return onBoard;
 }
 
-void Piece::setPossibleMoves(Chessboard* board) {	
+void Piece::setPossibleMoves(Chessboard* board) {
 	int x = current->row;
 	int y = current->col;
 	int a, b;
@@ -104,165 +104,165 @@ void Piece::setPossibleMoves(Chessboard* board) {
 
 	switch (type) {
 	case 'K':
-		if (!board->squares[y + 1][x + 1].piece || board->squares[y + 1][x + 1].piece != color)
-			possibleMoves.push_back(board->squares[y + 1][x + 1]);
-		if (!board->squares[y + 1][x].piece || board->squares[y + 1][x].piece != color)
-			possibleMoves.push_back(board->squares[y + 1][x]);
-		if (!board->squares[y + 1][x - 1].piece || board->squares[y + 1][x - 1].piece != color)
-			possibleMoves.push_back(board->squares[y + 1][x - 1]);
-		if (!board->squares[y][x + 1].piece || board->squares[y][x + 1].piece != color)
-			possibleMoves.push_back(board->squares[y][x + 1]);
-		if (!board->squares[y][x - 1].piece || board->squares[y][x - 1].piece != color)
-			possibleMoves.push_back(board->squares[y][x - 1]);
-		if (!board->squares[y - 1][x + 1].piece || board->squares[y - 1][x + 1].piece != color)
-			possibleMoves.push_back(board->squares[y - 1][x + 1]);
-		if (!board->squares[y - 1][x].piece || board->squares[y - 1][x].piece != color)
-			possibleMoves.push_back(board->squares[y - 1][x]);
-		if (!board->squares[y - 1][x - 1].piece || board->squares[y - 1][x - 1].piece != color)
-			possibleMoves.push_back(board->squares[y - 1][x - 1]);
+		if (!board->squares[y + 1][x + 1].piece || board->squares[y + 1][x + 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y + 1][x + 1]);
+		if (!board->squares[y + 1][x].piece || board->squares[y + 1][x].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y + 1][x]);
+		if (!board->squares[y + 1][x - 1].piece || board->squares[y + 1][x - 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y + 1][x - 1]);
+		if (!board->squares[y][x + 1].piece || board->squares[y][x + 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y][x + 1]);
+		if (!board->squares[y][x - 1].piece || board->squares[y][x - 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y][x - 1]);
+		if (!board->squares[y - 1][x + 1].piece || board->squares[y - 1][x + 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y - 1][x + 1]);
+		if (!board->squares[y - 1][x].piece || board->squares[y - 1][x].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y - 1][x]);
+		if (!board->squares[y - 1][x - 1].piece || board->squares[y - 1][x - 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y - 1][x - 1]);
 
 		break;
 	case 'Q':
 		for (int i = x + 1; i < 8; i++)
 			if (!board->squares[y][i].piece)
-				possibleMoves.push_back(board->squares[y][i]);
-			else if (board->squares[y][i].piece != color) {
-				possibleMoves.push_back(board->squares[y][i]);
+				possibleMoves.push_back(&board->squares[y][i]);
+			else if (board->squares[y][i].piece == (color*-1)) {
+				possibleMoves.push_back(&board->squares[y][i]);
 				break;
 			}
 			else break;
 
-		for (int i = x - 1; i >= 0; i--)
-			if (!board->squares[y][i].piece)
-				possibleMoves.push_back(board->squares[y][i]);
-			else if (board->squares[y][i].piece != color) {
-				possibleMoves.push_back(board->squares[y][i]);
-				break;
-			}
-			else break;
-
-		for (int i = y + 1; i < 8; i++)
-			if (!board->squares[i][x].piece)
-				possibleMoves.push_back(board->squares[i][x]);
-			else if (board->squares[i][x].piece != color) {
-				possibleMoves.push_back(board->squares[i][x]);
-				break;
-			}
-			else break;
-
-		for (int i = y - 1; i >= 0; i--)
-			if (!board->squares[i][x].piece)
-				possibleMoves.push_back(board->squares[i][x]);
-			else if (board->squares[i][x].piece != color) {
-				possibleMoves.push_back(board->squares[i][x]);
-				break;
-			}
-			else break;
-			a = y + 1,
-				b = x + 1;
-
-			do { //1
-				if (!board->squares[a][b].piece)
-					possibleMoves.push_back(board->squares[a][b]);
-				else if (board->squares[a][b].piece != color) {
-					possibleMoves.push_back(board->squares[a][b]);
+			for (int i = x - 1; i >= 0; i--)
+				if (!board->squares[y][i].piece)
+					possibleMoves.push_back(&board->squares[y][i]);
+				else if (board->squares[y][i].piece == (color*-1)) {
+					possibleMoves.push_back(&board->squares[y][i]);
 					break;
 				}
 				else break;
-				++a;
-				++b;
-			} while (a < 8 || b < 8);
 
-			a = y - 1;
-			b = x + 1;
-			do { //2
-				if (!board->squares[a][b].piece)
-					possibleMoves.push_back(board->squares[a][b]);
-				else if (board->squares[a][b].piece != color) {
-					possibleMoves.push_back(board->squares[a][b]);
-					break;
-				}
-				else break;
-				--a;
-				++b;
-			} while (a >= 0 || b < 8);
+				for (int i = y + 1; i < 8; i++)
+					if (!board->squares[i][x].piece)
+						possibleMoves.push_back(&board->squares[i][x]);
+					else if (board->squares[i][x].piece == (color*-1)) {
+						possibleMoves.push_back(&board->squares[i][x]);
+						break;
+					}
+					else break;
 
-			a = y - 1;
-			b = x - 1;
-			do { //3
-				if (!board->squares[a][b].piece)
-					possibleMoves.push_back(board->squares[a][b]);
-				else if (board->squares[a][b].piece != color) {
-					possibleMoves.push_back(board->squares[a][b]);
-					break;
-				}
-				else break;
-				--a;
-				--b;
-			} while (a >= 0 || b >= 0);
+					for (int i = y - 1; i >= 0; i--)
+						if (!board->squares[i][x].piece)
+							possibleMoves.push_back(&board->squares[i][x]);
+						else if (board->squares[i][x].piece == (color*-1)) {
+							possibleMoves.push_back(&board->squares[i][x]);
+							break;
+						}
+						else break;
+						a = y + 1,
+							b = x + 1;
 
-			a = y + 1;
-			b = x - 1;
-			do { //4
-				if (!board->squares[a][b].piece)
-					possibleMoves.push_back(board->squares[a][b]);
-				else if (board->squares[a][b].piece != color) {
-					possibleMoves.push_back(board->squares[a][b]);
-					break;
-				}
-				else break;
-				++a;
-				--b;
-			} while (a < 8 || b >= 0);
+						do { //1
+							if (!board->squares[a][b].piece)
+								possibleMoves.push_back(&board->squares[a][b]);
+							else if (board->squares[a][b].piece == (color*-1)) {
+								possibleMoves.push_back(&board->squares[a][b]);
+								break;
+							}
+							else break;
+							++a;
+							++b;
+						} while (a < 8 || b < 8);
 
-		break;
+						a = y - 1;
+						b = x + 1;
+						do { //2
+							if (!board->squares[a][b].piece)
+								possibleMoves.push_back(&board->squares[a][b]);
+							else if (board->squares[a][b].piece == (color*-1)) {
+								possibleMoves.push_back(&board->squares[a][b]);
+								break;
+							}
+							else break;
+							--a;
+							++b;
+						} while (a >= 0 || b < 8);
+
+						a = y - 1;
+						b = x - 1;
+						do { //3
+							if (!board->squares[a][b].piece)
+								possibleMoves.push_back(&board->squares[a][b]);
+							else if (board->squares[a][b].piece == (color*-1)) {
+								possibleMoves.push_back(&board->squares[a][b]);
+								break;
+							}
+							else break;
+							--a;
+							--b;
+						} while (a >= 0 || b >= 0);
+
+						a = y + 1;
+						b = x - 1;
+						do { //4
+							if (!board->squares[a][b].piece)
+								possibleMoves.push_back(&board->squares[a][b]);
+							else if (board->squares[a][b].piece == (color*-1)) {
+								possibleMoves.push_back(&board->squares[a][b]);
+								break;
+							}
+							else break;
+							++a;
+							--b;
+						} while (a < 8 || b >= 0);
+
+						break;
 	case 'R':
 		for (int i = x + 1; i < 8; i++)
 			if (!board->squares[y][i].piece)
-				possibleMoves.push_back(board->squares[y][i]);
-			else if (board->squares[y][i].piece != color) {
-				possibleMoves.push_back(board->squares[y][i]);
+				possibleMoves.push_back(&board->squares[y][i]);
+			else if (board->squares[y][i].piece == (color*-1)) {
+				possibleMoves.push_back(&board->squares[y][i]);
 				break;
 			}
 			else break;
 
-		for (int i = x - 1; i >= 0; i--)
-			if (!board->squares[y][i].piece)
-				possibleMoves.push_back(board->squares[y][i]);
-			else if (board->squares[y][i].piece != color) {
-				possibleMoves.push_back(board->squares[y][i]);
-				break;
-			}
-			else break;
+			for (int i = x - 1; i >= 0; i--)
+				if (!board->squares[y][i].piece)
+					possibleMoves.push_back(&board->squares[y][i]);
+				else if (board->squares[y][i].piece == (color*-1)) {
+					possibleMoves.push_back(&board->squares[y][i]);
+					break;
+				}
+				else break;
 
-		for (int i = y + 1; i < 8; i++)
-			if (!board->squares[i][x].piece)
-				possibleMoves.push_back(board->squares[i][x]);
-			else if (board->squares[i][x].piece != color) {
-				possibleMoves.push_back(board->squares[i][x]);
-				break;
-			}
-			else break;
+				for (int i = y + 1; i < 8; i++)
+					if (!board->squares[i][x].piece)
+						possibleMoves.push_back(&board->squares[i][x]);
+					else if (board->squares[i][x].piece == (color*-1)) {
+						possibleMoves.push_back(&board->squares[i][x]);
+						break;
+					}
+					else break;
 
-		for (int i = y - 1; i >= 0; i--)
-			if (!board->squares[i][x].piece)
-				possibleMoves.push_back(board->squares[i][x]);
-			else if (board->squares[i][x].piece != color) {
-				possibleMoves.push_back(board->squares[i][x]);
-				break;
-			}
-			else break;
+					for (int i = y - 1; i >= 0; i--)
+						if (!board->squares[i][x].piece)
+							possibleMoves.push_back(&board->squares[i][x]);
+						else if (board->squares[i][x].piece == (color*-1)) {
+							possibleMoves.push_back(&board->squares[i][x]);
+							break;
+						}
+						else break;
 
-		break;
+						break;
 	case 'B':
-		a = y + 1, 
-		b = x + 1;
+		a = y + 1,
+			b = x + 1;
 
 		do { //1
 			if (!board->squares[a][b].piece)
-				possibleMoves.push_back(board->squares[a][b]);
-			else if (board->squares[a][b].piece != color) {
-				possibleMoves.push_back(board->squares[a][b]);
+				possibleMoves.push_back(&board->squares[a][b]);
+			else if (board->squares[a][b].piece == (color*-1)) {
+				possibleMoves.push_back(&board->squares[a][b]);
 				break;
 			}
 			else break;
@@ -274,9 +274,9 @@ void Piece::setPossibleMoves(Chessboard* board) {
 		b = x + 1;
 		do { //2
 			if (!board->squares[a][b].piece)
-				possibleMoves.push_back(board->squares[a][b]);
-			else if (board->squares[a][b].piece != color) {
-				possibleMoves.push_back(board->squares[a][b]);
+				possibleMoves.push_back(&board->squares[a][b]);
+			else if (board->squares[a][b].piece == (color*-1)) {
+				possibleMoves.push_back(&board->squares[a][b]);
 				break;
 			}
 			else break;
@@ -288,9 +288,9 @@ void Piece::setPossibleMoves(Chessboard* board) {
 		b = x - 1;
 		do { //3
 			if (!board->squares[a][b].piece)
-				possibleMoves.push_back(board->squares[a][b]);
-			else if (board->squares[a][b].piece != color) {
-				possibleMoves.push_back(board->squares[a][b]);
+				possibleMoves.push_back(&board->squares[a][b]);
+			else if (board->squares[a][b].piece == (color*-1)) {
+				possibleMoves.push_back(&board->squares[a][b]);
 				break;
 			}
 			else break;
@@ -302,9 +302,9 @@ void Piece::setPossibleMoves(Chessboard* board) {
 		b = x - 1;
 		do { //4
 			if (!board->squares[a][b].piece)
-				possibleMoves.push_back(board->squares[a][b]);
-			else if (board->squares[a][b].piece != color) {
-				possibleMoves.push_back(board->squares[a][b]);
+				possibleMoves.push_back(&board->squares[a][b]);
+			else if (board->squares[a][b].piece == (color*-1)) {
+				possibleMoves.push_back(&board->squares[a][b]);
 				break;
 			}
 			else break;
@@ -313,57 +313,58 @@ void Piece::setPossibleMoves(Chessboard* board) {
 		} while (a < 8 || b >= 0);
 		break;
 	case 'N':
-		if (!board->squares[y + 1][x + 2].piece || board->squares[y + 1][x + 2].piece != color)
-			possibleMoves.push_back(board->squares[y + 1][x + 2]);
-		if (!board->squares[y + 2][x + 1].piece || board->squares[y + 2][x + 1].piece != color)
-			possibleMoves.push_back(board->squares[y + 2][x + 1]);
-		if (!board->squares[y + 2][x - 1].piece || board->squares[y + 2][x - 1].piece != color)
-			possibleMoves.push_back(board->squares[y + 2][x - 1]);
-		if (!board->squares[y + 1][x - 2].piece || board->squares[y + 1][x - 2].piece != color)
-			possibleMoves.push_back(board->squares[y + 1][x - 2]);
-		if (!board->squares[y - 1][x - 2].piece || board->squares[y - 1][x - 2].piece != color)
-			possibleMoves.push_back(board->squares[y - 1][x - 2]);
-		if (!board->squares[y - 2][x - 1].piece || board->squares[y - 2][x - 1].piece != color)
-			possibleMoves.push_back(board->squares[y - 2][x - 1]);
-		if (!board->squares[y - 2][x + 1].piece || board->squares[y - 1][x + 1].piece != color)
-			possibleMoves.push_back(board->squares[y - 1][x + 1]);
-		if (!board->squares[y - 1][x + 2].piece || board->squares[y - 1][x + 2].piece != color)
-			possibleMoves.push_back(board->squares[y - 1][x + 2]);
-		
+		if (!board->squares[y + 1][x + 2].piece || board->squares[y + 1][x + 2].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y + 1][x + 2]);
+		if (!board->squares[y + 2][x + 1].piece || board->squares[y + 2][x + 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y + 2][x + 1]);
+		if (!board->squares[y + 2][x - 1].piece || board->squares[y + 2][x - 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y + 2][x - 1]);
+		if (!board->squares[y + 1][x - 2].piece || board->squares[y + 1][x - 2].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y + 1][x - 2]);
+		if (!board->squares[y - 1][x - 2].piece || board->squares[y - 1][x - 2].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y - 1][x - 2]);
+		if (!board->squares[y - 2][x - 1].piece || board->squares[y - 2][x - 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y - 2][x - 1]);
+		if (!board->squares[y - 2][x + 1].piece || board->squares[y - 1][x + 1].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y - 1][x + 1]);
+		if (!board->squares[y - 1][x + 2].piece || board->squares[y - 1][x + 2].piece == (color*-1))
+			possibleMoves.push_back(&board->squares[y - 1][x + 2]);
+
 		break;
 	case 'p':
-		if (color == 1) {
+		if (color == -1) {
 			if (x == 1) {
 				if (!board->squares[y][x - 1].piece) {
-					possibleMoves.push_back(board->squares[y][x - 1]);
+					possibleMoves.push_back(&board->squares[y][x - 1]);
 					if (!board->squares[y][x - 2].piece)
-						possibleMoves.push_back(board->squares[y][x - 2]);
+						possibleMoves.push_back(&board->squares[y][x - 2]);
 				}
 			}
 			else {
 				if (!board->squares[y][x - 1].piece)
-					possibleMoves.push_back(board->squares[y][x - 1]);
-				if (board->squares[y + 1][x - 1].piece != color)
-					possibleMoves.push_back(board->squares[y + 1][x - 1]);
-				if (board->squares[y - 1][x - 1].piece != color)
-					possibleMoves.push_back(board->squares[y - 1][x - 1]);
+					possibleMoves.push_back(&board->squares[y][x - 1]);
+				if (board->squares[y + 1][x - 1].piece == (color*-1))
+					possibleMoves.push_back(&board->squares[y + 1][x - 1]);
+				if (board->squares[y - 1][x - 1].piece == (color*-1))
+					possibleMoves.push_back(&board->squares[y - 1][x - 1]);
 			}
 		}
 		else {
 			if (x == 1) {
 				if (!board->squares[y][x + 1].piece) {
-					possibleMoves.push_back(board->squares[y][x + 1]);
+					possibleMoves.push_back(&board->squares[y][x + 1]);
 					if (!board->squares[y][x + 2].piece)
-						possibleMoves.push_back(board->squares[y][x + 2]);
+						possibleMoves.push_back(&board->squares[y][x + 2]);
 				}
 			}
 			else {
 				if (!board->squares[y][x + 1].piece)
-					possibleMoves.push_back(board->squares[y][x + 1]);
-				if (board->squares[y + 1][x + 1].piece != color)
-					possibleMoves.push_back(board->squares[y + 1][x + 1]);
-				if (board->squares[y - 1][x + 1].piece != color)
-					possibleMoves.push_back(board->squares[y - 1][x + 1]);
+					possibleMoves.push_back(&board->squares[y][x + 1]);
+				cout << "dupa";
+				if (board->squares[y + 1][x + 1].piece == (color*-1))
+					possibleMoves.push_back(&board->squares[y + 1][x + 1]);
+				if (board->squares[y - 1][x + 1].piece == (color*-1))
+					possibleMoves.push_back(&board->squares[y - 1][x + 1]);
 			}
 		}
 		break;

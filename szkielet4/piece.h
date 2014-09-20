@@ -13,7 +13,7 @@ class Piece {
 
 public:
 	int color;
-	vector<Square> possibleMoves;
+	vector<Square*> possibleMoves;
 
 	void draw(ShaderProgram*);
 	void move(Chessboard*);

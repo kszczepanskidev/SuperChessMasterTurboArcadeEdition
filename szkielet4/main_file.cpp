@@ -167,7 +167,7 @@ void cleanShaders() {
 
 
 void keyDown(int c, int x, int y){
-	int temp;
+	int temp, temp2;
 	switch (c) {
 	case GLUT_KEY_UP:
 		speedX = 100;
@@ -186,8 +186,11 @@ void keyDown(int c, int x, int y){
 		test++;
 		break;
 	case GLUT_KEY_F2:
-		temp = rand() % App->pieces[2]->possibleMoves.size();// 2;//rand() % 32;
-		App->pieces[2]->setTarget(&App->pieces[2]->possibleMoves[temp]);
+		temp2 = rand() % 32;
+		if (App->pieces[temp2]->possibleMoves.size() > 0) {
+			temp = rand() % App->pieces[temp2]->possibleMoves.size();
+			App->pieces[temp2]->setTarget(App->pieces[temp2]->possibleMoves[temp]);
+		}
 		break;
 	case GLUT_KEY_F3:
 		App->pieces[2]->setTarget(&App->chessBoard->squares[2][1]);
@@ -225,7 +228,7 @@ void keyUp(int c, int x, int y){
 }
 
 int main(int argc, char** argv) {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	initGLUT(&argc,argv);
 	initGLEW();
 	initOpenGL(); 
