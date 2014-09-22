@@ -178,16 +178,18 @@ void nextMove() {
 		for (int i = 0; i < 32; ++i) {				//piece to moveto the target
 			if (App->pieces[i]->getOnBoard()) {
 				for (unsigned int j = 0; j < App->pieces[i]->possibleMoves.size(); ++j) {
-					if (move.pcol == -1)
+					if (move.pcol == -1) {
 						if (App->pieces[i]->possibleMoves[j]->col == move.col && App->pieces[i]->possibleMoves[j]->row == move.row && App->pieces[i]->type == move.piece && App->pieces[i]->color == move.color) {
 							piece = i;
 							break;
 						}
-						else
-							if (App->pieces[i]->possibleMoves[j]->col == move.col && App->pieces[i]->possibleMoves[j]->row == move.row && App->pieces[i]->type == move.piece && App->pieces[i]->current->col == move.pcol && App->pieces[i]->color == move.color) {
-								piece = i;
-								break;
-							}
+					}
+					else {
+						if (App->pieces[i]->possibleMoves[j]->col == move.col && App->pieces[i]->possibleMoves[j]->row == move.row && App->pieces[i]->type == move.piece && App->pieces[i]->current->col == move.pcol && App->pieces[i]->color == move.color) {
+							piece = i;
+							break;
+						}
+					}
 				}
 			}
 			if (piece != -1) {
@@ -272,6 +274,7 @@ void keyDown(int c, int x, int y) {
 		}
 		break;
 	case GLUT_KEY_F3:
+		if (!App->match->postMoves.empty())
 		nextMove();
 		break;
 	case GLUT_KEY_F4:

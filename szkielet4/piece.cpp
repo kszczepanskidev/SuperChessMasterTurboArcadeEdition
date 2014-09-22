@@ -64,7 +64,6 @@ void Piece::move(Chessboard* board) {
 			break;
 		}
 	}
-	
 }
 
 bool Piece::getMoving() {

@@ -9,8 +9,6 @@
 
 class Application {
 public:
-	//ShaderProgram *shader;					//Wskaünik na obiekt reprezentujπcy program cieniujπcy.
-
 	GLuint textures[5];						//array of texture handles
 
 	Model* models[7];						//array of pointers to models
