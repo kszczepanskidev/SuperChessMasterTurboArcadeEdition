@@ -22,7 +22,7 @@
 using namespace std;
 using namespace glm;
 
-int test=2;
+int lock = 0;
 
 //Macierze
 mat4  matP;																										//rzutowania
@@ -194,6 +194,9 @@ void nextMove() {
 			}
 			if (piece != -1) {
 				App->pieces[piece]->setTarget(&App->chessBoard->squares[move.col][move.row]);
+				move.prow = App->pieces[piece]->current->row;
+				move.pcolumn = App->pieces[piece]->current->col;
+				move.pieceno = piece;
 				break;
 			}
 		}
@@ -204,6 +207,7 @@ void nextMove() {
 						piece2 = i;
 					if (piece2 != -1) {
 						App->pieces[piece2]->setOnBoard(false);
+						move.pieceno2 = piece2;
 						break;
 					}
 				}
@@ -234,11 +238,43 @@ void nextMove() {
 			}
 		}
 	}
-	
+	App->match->reMoves.push_back(move);
 }
 
 
 void prevMove() {
+	Move move = App->match->reMoves.back();
+	App->match->reMoves.pop_back();
+
+	if (!move.castling) {
+		App->pieces[move.pieceno]->setTarget(&App->chessBoard->squares[move.pcolumn][move.prow]);
+		if (move.pieceno2 != -1)
+			App->pieces[move.pieceno]->setOnBoard(true);
+	}
+	else {
+		switch (move.color) {
+		case -1:
+			if (move.castling == 1) {				//short
+				App->pieces[31]->setTarget(&App->chessBoard->squares[4][7]);
+				App->pieces[30]->setTarget(&App->chessBoard->squares[7][7]);
+			}
+			else {									//queen
+				App->pieces[31]->setTarget(&App->chessBoard->squares[4][7]);
+				App->pieces[29]->setTarget(&App->chessBoard->squares[0][7]);
+			}
+			break;
+		case 1:
+			if (move.castling == 1) {				//short
+				App->pieces[15]->setTarget(&App->chessBoard->squares[4][0]);
+				App->pieces[14]->setTarget(&App->chessBoard->squares[7][0]);
+			}
+			else {									//queen
+				App->pieces[15]->setTarget(&App->chessBoard->squares[4][0]);
+				App->pieces[13]->setTarget(&App->chessBoard->squares[0][0]);
+			}
+		}
+	}
+	App->match->postMoves.push_back(move);
 
 }
 
@@ -259,8 +295,6 @@ void keyDown(int c, int x, int y) {
 		speedY = -100;
 		break;
 	case GLUT_KEY_F1:
-		App->pieces[2]->setTarget(&App->chessBoard->squares[2][test]);
-		test++;
 		break;
 	case GLUT_KEY_F2:
 		temp2 = rand() % 32;
@@ -273,20 +307,28 @@ void keyDown(int c, int x, int y) {
 					App->pieces[i]->setOnBoard(false);
 		}
 		break;
-	case GLUT_KEY_F3:
-		if (!App->match->postMoves.empty())
-		nextMove();
+	case GLUT_KEY_F3:	
+		for (int i = 0; i < 32; ++i)
+			if (App->pieces[i]->getMoving())
+				lock++;
+		
+		if (!App->match->postMoves.empty() && lock==0)
+			nextMove();
+
+		if (App->match->postMoves.empty())
+			cout << "End of game - " << App->match->result;
+		lock = 0;
 		break;
 	case GLUT_KEY_F4:
+		for (int i = 0; i < 32; ++i)
+			if (App->pieces[i]->getMoving())
+				lock++;
+		if (!App->match->reMoves.empty() && lock == 0)
 		prevMove();
+
+		lock = 0;
 		break;
 	case GLUT_KEY_F5:
-		int x, y;
-		do {
-			x = rand() % 8;
-			y = rand() % 8;
-		} while (App->chessBoard->squares[x][y].piece != 0);
-		App->pieces[rand() % 32]->setTarget(&App->chessBoard->squares[x][y]);
 		break;
 	case GLUT_KEY_F6:
 		system("cls");

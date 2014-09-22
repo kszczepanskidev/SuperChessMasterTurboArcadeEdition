@@ -11,6 +11,8 @@ struct Move {
 	bool capture, promote;
 	int castling;	//1 - short, 2 - queen
 	int check;		//1- check, 2 - checkmate
+
+	int pcolumn, prow, pieceno, pieceno2;	//data to reverse moves
 };
 
 class Match {
@@ -21,6 +23,7 @@ public:
 
 	vector<string> moves;
 	vector<Move> postMoves;
+	vector<Move> reMoves;
 	void write(Match*);
 
 	Match();

@@ -68,13 +68,11 @@ void Match::write(Match* game) {
 	if (!game->annotator.empty())
 		cout << "Annotator's name: " << game->annotator << endl;
 
-	/*if (!game->moves.empty()) {
+	if (!game->moves.empty()) {
 		cout << endl << "Moves:" << endl;
 		for (string move : game->moves)
 			cout << move << endl;
-	}*/
-	for (unsigned int i = 0; i < game->moves.size(); i++)
-		cout << game->moves[i] << "\t" << game->postMoves[i].col << "-" << game->postMoves[i].row << endl;
+	}
 }
 
 
@@ -83,10 +81,11 @@ void parseMoves(Match* game) {
 
 	for (unsigned int m = 0; m < game->moves.size(); m++) {
 
-	temp.col = temp.row = 0;
-	temp.pcol = -1;
-	temp.check = temp.castling = 0;
-	temp.promote = temp.capture = false;
+		temp.col = temp.row = 0;
+		temp.pcolumn = temp.prow = temp.pcol = -1;
+		temp.pieceno = temp.pieceno2 = -1;
+		temp.check = temp.castling = 0;
+		temp.promote = temp.capture = false;
 
 
 		if (game->moves[m] == "O-O")
@@ -163,9 +162,9 @@ void parseMoves(Match* game) {
 Match::Match() {
 	string filename,temp;
 	ifstream pgnfile;
-	//cout << "Enter .PGN file name: ";
-	//cin >> filename;
-	filename = "test";
+	cout << "Enter .PGN file name: ";
+	cin >> filename;
+	//filename = "test";
 	pgnfile.open("data\\" + filename + ".pgn", ios::in);
 	if (pgnfile.fail()){
 		cout << "Error: could not open file" << endl;
