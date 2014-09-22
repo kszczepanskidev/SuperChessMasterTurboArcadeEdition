@@ -150,7 +150,7 @@ void parseMoves(Match* game) {
 
 		}
 		temp.row--;
-		if (!m % 2)
+		if (m % 2 == 0)
 			temp.color = 1;
 		else
 			temp.color = -1;

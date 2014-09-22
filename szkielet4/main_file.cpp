@@ -170,10 +170,11 @@ void cleanShaders() {
 
 void nextMove() {
 	Move move = App->match->postMoves.back();
-	cout << (char)(move.col + 97) << (char)(move.row + 49) << endl;
 	App->match->postMoves.pop_back();
 	int piece = -1, piece2 = -1;
+
 	if (!move.castling) {							//normal move
+		cout << (char)(move.col + 97) << (char)(move.row + 49) << endl;
 		for (int i = 0; i < 32; ++i) {				//piece to moveto the target
 			if (App->pieces[i]->getOnBoard()) {
 				for (unsigned int j = 0; j < App->pieces[i]->possibleMoves.size(); ++j) {
@@ -208,7 +209,28 @@ void nextMove() {
 		}
 	}
 	else {											//castling
-
+		cout << "castling" << endl;
+		switch (move.color) {
+		case -1:
+			if (move.castling == 1) {				//short
+				App->pieces[31]->setTarget(&App->chessBoard->squares[6][7]);
+				App->pieces[30]->setTarget(&App->chessBoard->squares[5][7]);
+			}
+			else {									//queen
+				App->pieces[31]->setTarget(&App->chessBoard->squares[1][7]);
+				App->pieces[29]->setTarget(&App->chessBoard->squares[2][7]);
+			}
+			break;
+		case 1:
+			if (move.castling == 1) {				//short
+				App->pieces[15]->setTarget(&App->chessBoard->squares[6][0]);
+				App->pieces[14]->setTarget(&App->chessBoard->squares[5][0]);
+			}
+			else {									//queen
+				App->pieces[15]->setTarget(&App->chessBoard->squares[1][0]);
+				App->pieces[13]->setTarget(&App->chessBoard->squares[2][0]);
+			}
+		}
 	}
 	
 }
