@@ -3,16 +3,16 @@
 
 class Piece {
 	Model* model;
-	char type;
 	mat4 matM;
 	GLuint *texture, *textureSpecular;
 	float xDistance, yDistance, xCoord, yCoord;
 	bool onBoard, moving;
-	Square *current, *target;
 	int rot;
 
 public:
+	Square *current, *target;
 	int color;
+	char type;
 	vector<Square*> possibleMoves;
 
 	void draw(ShaderProgram*);
@@ -25,6 +25,8 @@ public:
 	bool getMoving();
 	void setMoving(bool);
 	void setPossibleMoves(Chessboard*);
+
+	Piece findPiece(Square* move);
 
 	Piece(Model*, GLuint*, GLuint*, Square*, char);
 };
