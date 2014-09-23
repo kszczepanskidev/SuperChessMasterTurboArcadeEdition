@@ -249,7 +249,7 @@ void prevMove() {
 	if (!move.castling) {
 		App->pieces[move.pieceno]->setTarget(&App->chessBoard->squares[move.pcolumn][move.prow]);
 		if (move.pieceno2 != -1)
-			App->pieces[move.pieceno]->setOnBoard(true);
+			App->pieces[move.pieceno2]->setOnBoard(true);
 	}
 	else {
 		switch (move.color) {
