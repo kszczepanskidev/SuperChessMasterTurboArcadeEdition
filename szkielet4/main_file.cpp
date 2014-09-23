@@ -252,6 +252,7 @@ void prevMove() {
 			App->chessBoard->squares[App->pieces[move.pieceno2]->current->col][App->pieces[move.pieceno2]->current->row].piece = App->pieces[move.pieceno2]->color;
 			App->pieces[move.pieceno2]->setOnBoard(true);
 		}
+
 	}
 	else {
 		switch (move.color) {
