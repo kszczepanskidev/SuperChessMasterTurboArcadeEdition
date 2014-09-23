@@ -130,7 +130,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 			}
 			else break;
 
-			for (int i = x - 1; i >= 0; i--)
+		for (int i = x - 1; i >= 0; i--)
 				if (!board->squares[y][i].piece)
 					possibleMoves.push_back(&board->squares[y][i]);
 				else if (board->squares[y][i].piece == (color*-1)) {
@@ -139,7 +139,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 				}
 				else break;
 
-				for (int i = y + 1; i < 8; i++)
+		for (int i = y + 1; i < 8; i++)
 					if (!board->squares[i][x].piece)
 						possibleMoves.push_back(&board->squares[i][x]);
 					else if (board->squares[i][x].piece == (color*-1)) {
@@ -148,7 +148,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 					}
 					else break;
 
-					for (int i = y - 1; i >= 0; i--)
+		for (int i = y - 1; i >= 0; i--)
 						if (!board->squares[i][x].piece)
 							possibleMoves.push_back(&board->squares[i][x]);
 						else if (board->squares[i][x].piece == (color*-1)) {
@@ -156,6 +156,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 							break;
 						}
 						else break;
+						
 						a = y + 1,
 							b = x + 1;
 						if (a < 8 && b < 8)
@@ -170,7 +171,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 							else break;
 							++a;
 							++b;
-						} while (a < 8 || b < 8);
+						} while (a < 8 && b < 8);
 
 						a = y - 1;
 						b = x + 1;
@@ -185,7 +186,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 							else break;
 							--a;
 							++b;
-						} while (a >= 0 || b < 8);
+						} while (a >= 0 && b < 8);
 
 						a = y - 1;
 						b = x - 1;
@@ -200,7 +201,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 							else break;
 							--a;
 							--b;
-						} while (a >= 0 || b >= 0);
+						} while (a >= 0 && b >= 0);
 
 						a = y + 1;
 						b = x - 1;
@@ -215,7 +216,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 							else break;
 							++a;
 							--b;
-						} while (a < 8 || b >= 0);
+						} while (a < 8 && b >= 0);
 
 						break;
 	case 'R':
@@ -270,7 +271,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 			else break;
 			++a;
 			++b;
-		} while (a < 8 || b < 8);
+		} while (a < 8 && b < 8);
 
 		a = y - 1;
 		b = x + 1;
@@ -285,7 +286,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 			else break;
 			--a;
 			++b;
-		} while (a >= 0 || b < 8);
+		} while (a >= 0 && b < 8);
 
 		a = y - 1;
 		b = x - 1;
@@ -300,7 +301,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 			else break;
 			--a;
 			--b;
-		} while (a >= 0 || b >= 0);
+		} while (a >= 0 && b >= 0);
 
 		a = y + 1;
 		b = x - 1;
@@ -315,7 +316,7 @@ void Piece::setPossibleMoves(Chessboard* board) {
 			else break;
 			++a;
 			--b;
-		} while (a < 8 || b >= 0);
+		} while (a < 8 && b >= 0);
 		break;
 	case 'N':
 		if ((y + 1 < 8) && (x + 2 < 8) && (!board->squares[y + 1][x + 2].piece || board->squares[y + 1][x + 2].piece == (color*-1)))
@@ -348,11 +349,11 @@ void Piece::setPossibleMoves(Chessboard* board) {
 			else {
 				if ((x - 1 >= 0) && (!board->squares[y][x - 1].piece))
 					possibleMoves.push_back(&board->squares[y][x - 1]);
+			}
 				if ((x - 1 >= 0) && (y + 1 < 8) && (board->squares[y + 1][x - 1].piece == (color*-1)))
 					possibleMoves.push_back(&board->squares[y + 1][x - 1]);
 				if ((x - 1 >= 0) && (y - 1 >= 0) && (board->squares[y - 1][x - 1].piece == (color*-1)))
 					possibleMoves.push_back(&board->squares[y - 1][x - 1]);
-			}
 		}
 		else {
 			if (x == 1) {
@@ -365,11 +366,11 @@ void Piece::setPossibleMoves(Chessboard* board) {
 			else {
 				if ((x + 1 < 8) && (!board->squares[y][x + 1].piece))
 					possibleMoves.push_back(&board->squares[y][x + 1]);
+			}
 				if ((x + 1 < 8) && (y + 1 < 8) && (board->squares[y + 1][x + 1].piece == (color*-1)))
 					possibleMoves.push_back(&board->squares[y + 1][x + 1]);
 				if ((x + 1 < 8) && (y - 1 >= 0) && (board->squares[y - 1][x + 1].piece == (color*-1)))
 					possibleMoves.push_back(&board->squares[y - 1][x + 1]);
-			}
 		}
 		break;
 	}

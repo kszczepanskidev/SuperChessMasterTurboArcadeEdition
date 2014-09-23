@@ -248,8 +248,10 @@ void prevMove() {
 
 	if (!move.castling) {
 		App->pieces[move.pieceno]->setTarget(&App->chessBoard->squares[move.pcolumn][move.prow]);
-		if (move.pieceno2 != -1)
-			App->pieces[move.pieceno]->setOnBoard(true);
+		if (move.pieceno2 != -1) {
+			App->chessBoard->squares[App->pieces[move.pieceno2]->current->col][App->pieces[move.pieceno2]->current->row].piece = App->pieces[move.pieceno2]->color;
+			App->pieces[move.pieceno2]->setOnBoard(true);
+		}
 	}
 	else {
 		switch (move.color) {
@@ -361,7 +363,7 @@ int main(int argc, char** argv) {
 	glutSpecialUpFunc(keyUp);
 
 	App = new Application(shader);
-
+	FreeConsole();
 	glutMainLoop();
 	
 	cleanShaders();

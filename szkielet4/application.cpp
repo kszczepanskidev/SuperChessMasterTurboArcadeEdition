@@ -28,9 +28,16 @@ Application::Application(ShaderProgram *shader) {
 	//Init textures
 	textures[0] = readTexture("data\\textures\\whitepiece.tga");
 	textures[1] = readTexture("data\\textures\\blackpiece2.tga");
-	textures[2] = readTexture("data\\textures\\chessboardSpec3.tga"); //board.tga
-	textures[3] = readTexture("data\\textures\\glass2.tga"); //wood.tga
-	textures[4] = readTexture("data\\textures\\chessboard.tga");
+	textures[2] = readTexture("data\\textures\\chessboardSpec3.tga");
+	textures[3] = readTexture("data\\textures\\glass2.tga"); //wood.tga //wood'specular'
+	
+	int btex;
+	cout << "Choose Chessboard texture (0,1): ";
+	cin >> btex;
+	if (btex)
+		textures[4] = readTexture("data\\textures\\chessboard.tga");
+	else
+		textures[4] = readTexture("data\\textures\\chessboard2.tga");
 
 
 	//Init chessboard
